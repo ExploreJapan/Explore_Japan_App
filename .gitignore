@@ -1,15 +1,53 @@
+# Файли Android Studio та IntelliJ IDEA
 *.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
+.idea/
+.idea/caches/
+.idea/libraries/
+.idea/modules/
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/misc.xml
+.idea/vcs.xml
+.idea/inspectionProfiles/
+
+# Локальні налаштування Gradle
+.gradle/
+build/
 local.properties
+
+# Згенеровані файли компіляції
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Кеші та тимчасові файли
+*.log
+*.bak
+*.swp
+.DS_Store  # для macOS
+
+# Файли залежностей
+gradle/wrapper/gradle-wrapper.properties  # якщо не хочете включати конкретну версію wrapper
+libs/
+
+# Кеші для Android
+captures/
+externalNativeBuild/
+.cxx/
+
+# Файли конфігурації користувача
+*.hprof
+*.pyc
+*.pyo
+*.rbc
+
+# Тимчасові файли Android Studio
+*.keystore
+*.jks
+*.cert
+
+# Інші системні файли
+Thumbs.db  # для Windows
+*.tmp
