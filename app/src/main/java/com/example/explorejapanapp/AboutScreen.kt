@@ -1,4 +1,4 @@
-package com.example.explorejapanapp.about
+package com.example.explorejapanapp
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme

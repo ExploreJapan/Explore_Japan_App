@@ -1,4 +1,4 @@
-package com.example.explorejapanapp.map
+package com.example.explorejapanapp
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun MapScreen(mapDao: MapDao) {
     val scope = rememberCoroutineScope()
-    var mapContent by remember { mutableStateOf<MapLocation?>(null) }
+    var mapContent by remember { mutableStateOf<List<MapLocation>>(emptyList()) } // Змінено на List
 
     // Завантаження даних із бази при першому рендері
     LaunchedEffect(Unit) {
@@ -30,7 +30,7 @@ fun MapScreen(mapDao: MapDao) {
             )
 
             // Отримуємо вміст
-            mapContent = mapDao.getAllLocations().firstOrNull()
+            mapContent = mapDao.getAllLocations() // Змінено на список
         }
     }
 
@@ -41,17 +41,21 @@ fun MapScreen(mapDao: MapDao) {
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        mapContent?.let { content ->
-            Text(
-                text = content.name,
-                style = MaterialTheme.typography.headlineMedium,
-                fontSize = 24.sp
-            )
-            Text(
-                text = content.description ?: "Опис відсутній",
-                style = MaterialTheme.typography.bodyLarge,
-                fontSize = 16.sp
-            )
-        } ?: Text("Завантаження...", style = MaterialTheme.typography.bodyLarge)
+        if (mapContent.isNotEmpty()) {
+            mapContent.forEach { content ->
+                Text(
+                    text = content.name,
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontSize = 24.sp
+                )
+                Text(
+                    text = content.description ?: "Опис відсутній",
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontSize = 16.sp
+                )
+            }
+        } else {
+            Text("Завантаження...", style = MaterialTheme.typography.bodyLarge)
+        }
     }
 }
