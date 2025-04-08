@@ -1,4 +1,5 @@
 <resources>
+    <string name="app">Explore_Japan_App</string>
     <string name="app_name">Explore Japan</string>
     <string name="hint_flag">flag_photo</string>
     <string name="map">Карта</string>
