@@ -3,8 +3,8 @@ package com.example.explorejapanapp
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "about")
-data class About(
+@Entity(tableName = "settings")
+data class Settings(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,

@@ -8,7 +8,6 @@ data class Account(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val username: String,
-    val email: String? = null,
-    val language: String = "en",
-    val theme: String = "light"
+    val email: String,
+    val password: String
 )
