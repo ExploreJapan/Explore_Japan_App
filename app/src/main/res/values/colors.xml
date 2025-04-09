@@ -20,5 +20,7 @@
     <color name="grad3">#90473A</color>
     <color name="grad4">#BF774D</color>
     <color name="red2">#DF9791</color>
+    <color name="darkbrown">#754215</color>
+    <color name="darkred2">#4d0e05</color>
 
 </resources>

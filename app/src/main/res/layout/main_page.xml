@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <!-- Шапка -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
@@ -46,7 +47,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/fjord_one"
             android:gravity="center_vertical"
-            android:shadowColor="#FFF6F6"
             android:text="@string/app_name"
             android:textColor="@color/black"
             android:textSize="34sp"
@@ -54,6 +54,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/enter"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/cambo"
+            android:gravity="center"
+            android:text="@string/door"
+            android:textColor="@color/darkred2"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/Title"
+            app:layout_constraintTop_toTopOf="@+id/Title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!-- Подвал -->
@@ -65,11 +81,11 @@
 
         <ImageView
             android:id="@+id/info_icon"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_marginStart="290dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/info"
+            android:src="@drawable/settings"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -211,4 +227,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

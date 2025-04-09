@@ -1,10 +1,21 @@
 <resources>
     <string name="app">Explore_Japan_App</string>
+
+<!--    Шапка и Подвал-->
     <string name="app_name">Explore Japan</string>
     <string name="hint_flag">flag_photo</string>
     <string name="map">Карта</string>
     <string name="sections">Розділи</string>
     <string name="home">Головна</string>
     <string name="tips">Поради</string>
-    <string name="info">О нас</string>
+    <string name="info">Опції</string>
+
+<!--    Авторизация-->
+    <string name="door">Вхід</string>
+
+
+
+
+
+
 </resources>
