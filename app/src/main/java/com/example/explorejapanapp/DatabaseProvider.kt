@@ -4,15 +4,18 @@ import android.content.Context
 import androidx.room.Room
 
 object DatabaseProvider {
-    private var instance: AppDatabase? = null
+    private var database: AppDatabase? = null
 
     fun getDatabase(context: Context): AppDatabase {
-        return instance ?: synchronized(this) {
-            instance ?: Room.databaseBuilder(
+        if (database == null || database?.isOpen == false) {
+            database = Room.databaseBuilder(
                 context.applicationContext,
                 AppDatabase::class.java,
                 "explore_japan_db"
-            ).build().also { instance = it }
+            )
+                .fallbackToDestructiveMigration()
+                .build()
         }
+        return database!!
     }
 }
