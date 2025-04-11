@@ -20,7 +20,7 @@
         </activity>
         <!-- AccountActivity -->
         <activity
-            android:name=".AccountActivity"
+            android:name=".ProfileActivity"
             android:exported="false" />
     </application>
 

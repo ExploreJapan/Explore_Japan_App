@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
-    android:orientation="vertical">
+    android:background="@drawable/gradient_background">
 
     <!-- Шапка -->
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:background="@color/lightred"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/top_line"
@@ -55,27 +51,124 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/enter"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/cambo"
-            android:gravity="center"
-            android:text="@string/door"
-            android:textColor="@color/darkred2"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/Title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/Title"
-            app:layout_constraintTop_toTopOf="@+id/Title" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!-- Подвал -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <!-- Контент -->
+    <ScrollView
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="90sp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toTopOf="@id/footer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center">
+
+            <!-- Кнопка "Повернутися назад" -->
+            <Button
+                android:id="@+id/back_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Повернутися назад"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Перемикач між Вхід і Реєстрація -->
+            <RadioGroup
+                android:id="@+id/auth_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <RadioButton
+                    android:id="@+id/login_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Вхід"
+                    android:checked="true"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/register_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="Реєстрація"
+                    android:textSize="18sp" />
+
+            </RadioGroup>
+
+            <!-- Поле для логіну (використовується в обох режимах) -->
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Логін"
+                android:inputType="text" />
+
+            <!-- Поле для пошти (використовується тільки при реєстрації) -->
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Пошта"
+                android:inputType="textEmailAddress"
+                android:visibility="gone" />
+
+            <!-- Поле для пароля (використовується в обох режимах) -->
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Пароль"
+                android:inputType="textPassword" />
+
+            <!-- Поле для підтвердження пароля (використовується тільки при реєстрації) -->
+            <EditText
+                android:id="@+id/confirm_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="Підтвердіть пароль"
+                android:inputType="textPassword"
+                android:visibility="gone" />
+
+            <!-- Кнопка дії (залежить від режиму: "Увійти" або "Зареєструватися") -->
+            <Button
+                android:id="@+id/auth_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Увійти" />
+
+            <!-- Повідомлення про результат -->
+            <TextView
+                android:id="@+id/auth_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!-- Підвал -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
         android:background="@color/lightred"
         app:layout_constraintBottom_toBottomOf="parent">
 

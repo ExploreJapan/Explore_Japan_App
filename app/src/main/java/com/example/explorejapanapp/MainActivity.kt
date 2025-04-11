@@ -2,7 +2,7 @@ package com.example.explorejapanapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.TextView
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -10,12 +10,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_page)
 
-        // Знаходимо TextView "Вхід" і додаємо обробку кліку
-        val enterTextView = findViewById<TextView>(R.id.enter)
-        enterTextView.setOnClickListener {
-            // Перенаправлення на AccountActivity (сторінка авторизації)
-            val intent = Intent(this, AccountActivity::class.java)
-            startActivity(intent)
+        // Ініціалізація sections_icon
+        val sectionsIcon = findViewById<ImageView>(R.id.sections_icon)
+
+        // Обробка кліку на sections_icon
+        sectionsIcon.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
     }
 }

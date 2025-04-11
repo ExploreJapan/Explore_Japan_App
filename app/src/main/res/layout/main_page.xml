@@ -55,22 +55,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/enter"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/cambo"
-            android:gravity="center"
-            android:text="@string/door"
-            android:textColor="@color/darkred2"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="@+id/Title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/Title"
-            app:layout_constraintTop_toTopOf="@+id/Title" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!-- Подвал -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -180,6 +164,8 @@
             android:layout_marginEnd="150dp"
             android:layout_marginBottom="16dp"
             android:src="@drawable/profile"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

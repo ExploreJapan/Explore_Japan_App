@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "5a62c795c37f878269d13bf6622b9d95",
+    "identityHash": "b22665f22bffcc8e4c4ad337a5e5ad62",
     "entities": [
       {
         "tableName": "home_content",
@@ -37,7 +37,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "account",
+        "tableName": "profile",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `username` TEXT NOT NULL, `email` TEXT NOT NULL, `password` TEXT NOT NULL)",
         "fields": [
           {
@@ -78,7 +78,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5a62c795c37f878269d13bf6622b9d95')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b22665f22bffcc8e4c4ad337a5e5ad62')"
     ]
   }
 }

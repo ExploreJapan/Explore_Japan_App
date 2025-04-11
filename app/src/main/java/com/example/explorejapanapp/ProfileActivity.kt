@@ -17,14 +17,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AccountActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.account_page)
+        setContentView(R.layout.profile_page)
 
         try {
             val db = DatabaseProvider.getDatabase(this)
-            val accountDao = db.accountDao()
+            val profileDao = db.profileDao()
 
             val authMode = findViewById<RadioGroup>(R.id.auth_mode)
             val loginMode = findViewById<RadioButton>(R.id.login_mode)
@@ -32,23 +32,26 @@ class AccountActivity : AppCompatActivity() {
             val username = findViewById<EditText>(R.id.username)
             val email = findViewById<EditText>(R.id.email)
             val password = findViewById<EditText>(R.id.password)
+            val confirmPassword = findViewById<EditText>(R.id.confirm_password)
             val authButton = findViewById<Button>(R.id.auth_button)
             val authMessage = findViewById<TextView>(R.id.auth_message)
             val backButton = findViewById<Button>(R.id.back_button)
 
-            // Зміна видимості поля email та тексту кнопки залежно від режиму
+            // Зміна видимості полів email і confirm_password залежно від режиму
             authMode.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
                     R.id.login_mode -> {
                         email.visibility = View.GONE
+                        confirmPassword.visibility = View.GONE
                         authButton.text = "Увійти"
                     }
                     R.id.register_mode -> {
                         email.visibility = View.VISIBLE
+                        confirmPassword.visibility = View.VISIBLE
                         authButton.text = "Зареєструватися"
                     }
                 }
-                authMessage.visibility = View.GONE // Сховати повідомлення при зміні режиму
+                authMessage.visibility = View.GONE
             }
 
             // Обробка кліку на кнопку авторизації
@@ -56,40 +59,46 @@ class AccountActivity : AppCompatActivity() {
                 val usernameText = username.text.toString()
                 val emailText = email.text.toString()
                 val passwordText = password.text.toString()
+                val confirmPasswordText = confirmPassword.text.toString()
 
                 CoroutineScope(Dispatchers.Main).launch {
                     try {
                         if (loginMode.isChecked) {
                             // Режим входу
-                            val user = withContext(Dispatchers.IO) {
-                                accountDao.login(usernameText, passwordText)
-                            }
-                            if (user != null) {
-                                showMessage(authMessage, "Вхід успішний!", android.R.color.holo_green_dark)
-                                // Перенаправлення на головну сторінку після затримки
-                                Handler(Looper.getMainLooper()).postDelayed({
-                                    startActivity(Intent(this@AccountActivity, MainActivity::class.java))
-                                    finish()
-                                }, 2000) // Затримка 2 секунди
+                            if (usernameText.isBlank() || passwordText.isBlank()) { // Додано перевірку
+                                showMessage(authMessage, "Заповніть усі поля.", android.R.color.holo_red_dark)
                             } else {
-                                showMessage(authMessage, "Невірний логін або пароль.", android.R.color.holo_red_dark)
+                                val user = withContext(Dispatchers.IO) {
+                                    profileDao.login(usernameText, passwordText)
+                                }
+                                if (user != null) {
+                                    showMessage(authMessage, "Вхід успішний!", android.R.color.holo_green_dark)
+                                    Handler(Looper.getMainLooper()).postDelayed({
+                                        startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+                                        finish()
+                                    }, 2000)
+                                } else {
+                                    showMessage(authMessage, "Невірний логін або пароль.", android.R.color.holo_red_dark)
+                                }
                             }
-                        } else {
+                        } else if (registerMode.isChecked) {
                             // Режим реєстрації
-                            if (usernameText.isBlank() || emailText.isBlank() || passwordText.isBlank()) {
+                            if (usernameText.isBlank() || emailText.isBlank() || passwordText.isBlank() || confirmPasswordText.isBlank()) {
                                 showMessage(authMessage, "Заповніть усі поля.", android.R.color.holo_red_dark)
                             } else if (!isValidEmail(emailText)) {
                                 showMessage(authMessage, "Невірний формат пошти.", android.R.color.holo_red_dark)
+                            } else if (passwordText != confirmPasswordText) {
+                                showMessage(authMessage, "Паролі не збігаються.", android.R.color.holo_red_dark)
                             } else {
                                 val existingUser = withContext(Dispatchers.IO) {
-                                    accountDao.findByUsernameOrEmail(usernameText, emailText)
+                                    profileDao.findByUsernameOrEmail(usernameText, emailText)
                                 }
                                 if (existingUser != null) {
                                     showMessage(authMessage, "Користувач із таким логіном або поштою вже існує.", android.R.color.holo_red_dark)
                                 } else {
                                     withContext(Dispatchers.IO) {
-                                        accountDao.insert(
-                                            Account(
+                                        profileDao.insert(
+                                            Profile(
                                                 username = usernameText,
                                                 email = emailText,
                                                 password = passwordText
@@ -100,6 +109,7 @@ class AccountActivity : AppCompatActivity() {
                                     username.text.clear()
                                     email.text.clear()
                                     password.text.clear()
+                                    confirmPassword.text.clear()
                                 }
                             }
                         }
@@ -110,27 +120,24 @@ class AccountActivity : AppCompatActivity() {
                 }
             }
 
-            // Обробка кліку на "Повернутися назад" (нова кнопка)
+            // Обробка кліку на "Повернутися назад"
             backButton.setOnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }
+
         } catch (e: Exception) {
             e.printStackTrace()
-            // Для дебагу: показуємо помилку в Logcat
         }
     }
 
-    // Функція для перевірки формату пошти
     private fun isValidEmail(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    // Функція для відображення повідомлення з затримкою
     private fun showMessage(textView: TextView, message: String, colorResId: Int) {
         textView.text = message
         textView.visibility = View.VISIBLE
-        // Сховати повідомлення через 2 секунди
         Handler(Looper.getMainLooper()).postDelayed({
             textView.visibility = View.GONE
         }, 2000)
