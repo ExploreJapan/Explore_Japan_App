@@ -10,9 +10,28 @@
     <string name="tips">Поради</string>
     <string name="options">Опції</string>
 
-<!--    Авторизация-->
-    <string name="door">Вхід</string>
+<!--    Страница профиля-->
+    <string name="login">Вхід</string>
+    <string name="loginhint">Логін</string>
+    <string name="registration">Реєстрація</string>
+    <string name="email">Електронна пошта</string>
+    <string name="password">Пароль</string>
+    <string name="confirm_password">Підтвердження паролю</string>
 
+    <string name="button_login">Увійти</string>
+    <string name="button_registration">Зареєструватись</string>
+
+    <!--    Главная страница-->
+    <string name="home_title">Оберіть місто для перегляду інформації</string>
+
+    <!--    Страница карты-->
+    <string name="map_title">Карта Японії</string>
+
+    <!--    Страница с подсказками-->
+    <string name="tips_title">Перегляд корисних порад</string>
+
+    <!--    Страница настроек-->
+    <string name="options_title">Налаштування додатку</string>
 
 
 

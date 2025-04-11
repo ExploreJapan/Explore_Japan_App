@@ -11,10 +11,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_page)
 
         // Ініціалізація sections_icon
-        val sectionsIcon = findViewById<ImageView>(R.id.sections_icon)
+        val profileIcon = findViewById<ImageView>(R.id.profile_icon)
+
 
         // Обробка кліку на sections_icon
-        sectionsIcon.setOnClickListener {
+        profileIcon.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
         }
     }

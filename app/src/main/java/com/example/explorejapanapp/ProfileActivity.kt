@@ -35,7 +35,6 @@ class ProfileActivity : AppCompatActivity() {
             val confirmPassword = findViewById<EditText>(R.id.confirm_password)
             val authButton = findViewById<Button>(R.id.auth_button)
             val authMessage = findViewById<TextView>(R.id.auth_message)
-            val backButton = findViewById<Button>(R.id.back_button)
 
             // Зміна видимості полів email і confirm_password залежно від режиму
             authMode.setOnCheckedChangeListener { _, checkedId ->
@@ -118,12 +117,6 @@ class ProfileActivity : AppCompatActivity() {
                         showMessage(authMessage, "Помилка: ${e.message}", android.R.color.holo_red_dark)
                     }
                 }
-            }
-
-            // Обробка кліку на "Повернутися назад"
-            backButton.setOnClickListener {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
             }
 
         } catch (e: Exception) {

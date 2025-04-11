@@ -158,14 +158,12 @@
             app:layout_constraintTop_toTopOf="@+id/home_icon" />
 
         <ImageView
-            android:id="@+id/sections_icon"
+            android:id="@+id/profile_icon"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="150dp"
             android:layout_marginBottom="16dp"
             android:src="@drawable/profile"
-            android:clickable="true"
-            android:focusable="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -182,8 +180,8 @@
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/sections_icon"
-            app:layout_constraintStart_toStartOf="@+id/sections_icon"
+            app:layout_constraintEnd_toEndOf="@+id/profile_icon"
+            app:layout_constraintStart_toStartOf="@+id/profile_icon"
             app:layout_constraintTop_toTopOf="@+id/home_icon" />
 
         <ImageView
