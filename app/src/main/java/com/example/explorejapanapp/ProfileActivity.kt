@@ -43,11 +43,21 @@ class ProfileActivity : AppCompatActivity() {
                         email.visibility = View.GONE
                         confirmPassword.visibility = View.GONE
                         authButton.text = "Увійти"
+                        // Очищаємо всі поля при зміні режиму
+                        username.text.clear()
+                        email.text.clear()
+                        password.text.clear()
+                        confirmPassword.text.clear()
                     }
                     R.id.register_mode -> {
                         email.visibility = View.VISIBLE
                         confirmPassword.visibility = View.VISIBLE
                         authButton.text = "Зареєструватися"
+                        // Очищаємо всі поля при зміні режиму
+                        username.text.clear()
+                        email.text.clear()
+                        password.text.clear()
+                        confirmPassword.text.clear()
                     }
                 }
                 authMessage.visibility = View.GONE
@@ -64,7 +74,7 @@ class ProfileActivity : AppCompatActivity() {
                     try {
                         if (loginMode.isChecked) {
                             // Режим входу
-                            if (usernameText.isBlank() || passwordText.isBlank()) { // Додано перевірку
+                            if (usernameText.isBlank() || passwordText.isBlank()) {
                                 showMessage(authMessage, "Заповніть усі поля.", android.R.color.holo_red_dark)
                             } else {
                                 val user = withContext(Dispatchers.IO) {
