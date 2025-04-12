@@ -56,160 +56,27 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!-- Подвал -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        android:layout_height="90sp"
-        android:background="@color/lightred"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_height="wrap_content"
+        app:menu="@menu/bottom_nav_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:labelVisibilityMode="labeled" />
 
-        <ImageView
-            android:id="@+id/info_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="290dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/settings"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header">
 
-        <TextView
-            android:id="@+id/info_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/cambo"
-            android:text="@string/map"
-            android:textColorLink="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/map_icon"
-            app:layout_constraintStart_toStartOf="@+id/map_icon"
-            app:layout_constraintTop_toTopOf="@+id/home_icon" />
+    </FrameLayout>
 
-        <ImageView
-            android:id="@+id/tips_icon"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="150dp"
-            android:layout_marginBottom="14dp"
-            android:src="@drawable/tips"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tips_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/cambo"
-            android:text="@string/tips"
-            android:textColorLink="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tips_icon"
-            app:layout_constraintStart_toStartOf="@+id/tips_icon"
-            app:layout_constraintTop_toTopOf="@+id/home_icon" />
-
-        <ImageView
-            android:id="@+id/bottom_line"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="72dp"
-            android:scaleX="5"
-            android:src="@drawable/horizontal_line"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/map_icon"
-            android:layout_width="50dp"
-            android:layout_height="46dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="300dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/map"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/options_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/cambo"
-            android:text="@string/options"
-            android:textColorLink="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/info_icon"
-            app:layout_constraintStart_toStartOf="@+id/info_icon"
-            app:layout_constraintTop_toTopOf="@+id/home_icon" />
-
-        <ImageView
-            android:id="@+id/profile_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="150dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/profile"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/profile_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/cambo"
-            android:text="@string/profile"
-            android:textColorLink="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/profile_icon"
-            app:layout_constraintStart_toStartOf="@+id/profile_icon"
-            app:layout_constraintTop_toTopOf="@+id/home_icon" />
-
-        <ImageView
-            android:id="@+id/home_icon"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginBottom="16dp"
-            android:src="@drawable/home"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/home_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/cambo"
-            android:text="@string/home"
-            android:textColorLink="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/home_icon"
-            app:layout_constraintStart_toStartOf="@+id/home_icon"
-            app:layout_constraintTop_toTopOf="@+id/home_icon" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Подвал -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
