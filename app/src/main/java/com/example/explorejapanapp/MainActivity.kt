@@ -1,13 +1,54 @@
 package com.example.explorejapanapp
 
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.example.explorejapanapp.databinding.MainPageBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding: MainPageBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_page)
+        binding = MainPageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        if (savedInstanceState == null) {  // Загружаем фрагмент только при первом создании
+            replaceFragment(Fragment_Home())
+            binding.bottomNavigationView.selectedItemId = R.id.home
+        }
+
+        binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.map -> {
+                    replaceFragment(Fragment_Map())
+                    true
+                }
+                R.id.profile -> {
+                    replaceFragment(Fragment_Profile())
+                    true
+                }
+                R.id.home -> {
+                    replaceFragment(Fragment_Home())
+                    true
+                }
+                R.id.tips -> {
+                    replaceFragment(Fragment_Tips())
+                    true
+                }
+                R.id.options -> {
+                    replaceFragment(Fragment_Options())
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frame_layout, fragment)
+            .commit()
     }
 }

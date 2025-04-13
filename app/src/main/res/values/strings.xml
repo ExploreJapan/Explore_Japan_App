@@ -1,7 +1,7 @@
 <resources>
     <string name="app">Explore_Japan_App</string>
 
-<!--    Шапка и Подвал-->
+    <!--    Шапка и Подвал-->
     <string name="app_name">Explore Japan</string>
     <string name="hint_flag">flag_photo</string>
     <string name="map">Карта</string>
@@ -10,7 +10,7 @@
     <string name="tips">Поради</string>
     <string name="options">Опції</string>
 
-<!--    Страница профиля-->
+    <!--    Страница профиля-->
     <string name="login">Вхід</string>
     <string name="loginhint">Логін</string>
     <string name="registration">Реєстрація</string>
@@ -32,9 +32,8 @@
 
     <!--    Страница настроек-->
     <string name="options_title">Налаштування додатку</string>
-
-
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
