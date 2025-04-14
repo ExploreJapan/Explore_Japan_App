@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "617048948689",
+    "project_id": "explorejapanapp",
+    "storage_bucket": "explorejapanapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617048948689:android:a29fedf2e51433b3edeaf0",
+        "android_client_info": {
+          "package_name": "com.example.explorejapanapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2T8lg-Ygq9npvnHX1LkBp-dAwzlvIUcs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
