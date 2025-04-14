@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.explorejapanapp"
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
 
     implementation(platform(libs.firebase.bom))
+    implementation((libs.firebase.auth))
 
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
