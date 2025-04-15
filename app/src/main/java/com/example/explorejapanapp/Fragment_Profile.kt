@@ -17,6 +17,7 @@ class Fragment_Profile : Fragment() {
     private lateinit var loginContainer: ConstraintLayout
     private lateinit var registerContainer: ConstraintLayout
     private lateinit var logoutButton: Button
+    private lateinit var deleteAccountButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,22 +28,25 @@ class Fragment_Profile : Fragment() {
         // Ініціалізація Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        // Знаходимо контейнери для входу, реєстрації та кнопку "Вийти"
+        // Знаходимо контейнери для входу, реєстрації та кнопки
         loginContainer = view.findViewById(R.id.login_container)
         registerContainer = view.findViewById(R.id.register_container)
         logoutButton = view.findViewById(R.id.logout_button)
+        deleteAccountButton = view.findViewById(R.id.delete_account_button)
 
         // Перевіряємо стан авторизації та показуємо/ховаємо елементи
         if (auth.currentUser != null) {
-            // Якщо користувач авторизований, ховаємо контейнери та показуємо кнопку "Вийти"
+            // Якщо користувач авторизований, ховаємо контейнери та показуємо кнопки
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
             logoutButton.visibility = View.VISIBLE
+            deleteAccountButton.visibility = View.VISIBLE
         } else {
-            // Якщо користувач не авторизований, показуємо контейнери та ховаємо кнопку "Вийти"
+            // Якщо користувач не авторизований, показуємо контейнери та ховаємо кнопки
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
             logoutButton.visibility = View.GONE
+            deleteAccountButton.visibility = View.GONE
             setupLoginAndRegister(view)
         }
 
@@ -50,10 +54,37 @@ class Fragment_Profile : Fragment() {
         logoutButton.setOnClickListener {
             auth.signOut()
             Toast.makeText(context, "Вихід успішний!", Toast.LENGTH_SHORT).show()
-            // Показуємо контейнери для входу/реєстрації та ховаємо кнопку "Вийти"
+            // Показуємо контейнери для входу/реєстрації та ховаємо кнопки
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
             logoutButton.visibility = View.GONE
+            deleteAccountButton.visibility = View.GONE
+        }
+
+        // Обробник кнопки "Видалити акаунт"
+        deleteAccountButton.setOnClickListener {
+            val user = auth.currentUser
+            if (user != null) {
+                user.delete()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Toast.makeText(context, "Акаунт успішно видалено!", Toast.LENGTH_SHORT).show()
+                            // Показуємо контейнери для входу/реєстрації та ховаємо кнопки
+                            loginContainer.visibility = View.VISIBLE
+                            registerContainer.visibility = View.VISIBLE
+                            logoutButton.visibility = View.GONE
+                            deleteAccountButton.visibility = View.GONE
+                        } else {
+                            Toast.makeText(
+                                context,
+                                "Помилка видалення акаунта: ${task.exception?.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+            } else {
+                Toast.makeText(context, "Користувач не авторизований!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         return view
@@ -93,10 +124,11 @@ class Fragment_Profile : Fragment() {
                         // Очищаємо поля
                         loginEmail.text.clear()
                         loginPassword.text.clear()
-                        // Ховаємо контейнери та показуємо кнопку "Вийти"
+                        // Ховаємо контейнери та показуємо кнопки
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
                         logoutButton.visibility = View.VISIBLE
+                        deleteAccountButton.visibility = View.VISIBLE
                     } else {
                         Toast.makeText(
                             context,
@@ -140,10 +172,11 @@ class Fragment_Profile : Fragment() {
                         registerEmail.text.clear()
                         registerPassword.text.clear()
                         registerConfirmPassword.text.clear()
-                        // Ховаємо контейнери та показуємо кнопку "Вийти"
+                        // Ховаємо контейнери та показуємо кнопки
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
                         logoutButton.visibility = View.VISIBLE
+                        deleteAccountButton.visibility = View.VISIBLE
                     } else {
                         Toast.makeText(
                             context,
@@ -161,15 +194,17 @@ class Fragment_Profile : Fragment() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             Toast.makeText(context, "Користувач уже увійшов: ${currentUser.email}", Toast.LENGTH_SHORT).show()
-            // Ховаємо контейнери та показуємо кнопку "Вийти"
+            // Ховаємо контейнери та показуємо кнопки
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
             logoutButton.visibility = View.VISIBLE
+            deleteAccountButton.visibility = View.VISIBLE
         } else {
-            // Показуємо контейнери та ховаємо кнопку "Вийти"
+            // Показуємо контейнери та ховаємо кнопки
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
             logoutButton.visibility = View.GONE
+            deleteAccountButton.visibility = View.GONE
         }
     }
 }

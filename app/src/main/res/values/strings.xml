@@ -18,6 +18,7 @@
     <string name="password">Пароль</string>
     <string name="confirm_password">Підтвердження паролю</string>
     <string name="button_logout">Вийти</string>
+    <string name="button_delete_account">Видалити акаунт</string>
 
     <string name="button_login">Увійти</string>
     <string name="button_registration">Зареєструватись</string>
