@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +19,11 @@ class Fragment_Profile : Fragment() {
     private lateinit var registerContainer: ConstraintLayout
     private lateinit var logoutButton: Button
     private lateinit var deleteAccountButton: Button
+    private lateinit var newEmail: EditText
+    private lateinit var updateEmailButton: Button
+    private lateinit var newPassword: EditText
+    private lateinit var confirmNewPassword: EditText
+    private lateinit var updatePasswordButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,51 +39,76 @@ class Fragment_Profile : Fragment() {
         registerContainer = view.findViewById(R.id.register_container)
         logoutButton = view.findViewById(R.id.logout_button)
         deleteAccountButton = view.findViewById(R.id.delete_account_button)
+        newEmail = view.findViewById(R.id.new_email)
+        updateEmailButton = view.findViewById(R.id.update_email_button)
+        newPassword = view.findViewById(R.id.new_password)
+        confirmNewPassword = view.findViewById(R.id.confirm_new_password)
+        updatePasswordButton = view.findViewById(R.id.update_password_button)
 
         // Перевіряємо стан авторизації та показуємо/ховаємо елементи
         if (auth.currentUser != null) {
-            // Якщо користувач авторизований, ховаємо контейнери та показуємо кнопки
+            // Якщо користувач авторизований, ховаємо контейнери та показуємо поля для оновлення
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
+            newEmail.visibility = View.VISIBLE
+            updateEmailButton.visibility = View.VISIBLE
+            newPassword.visibility = View.VISIBLE
+            confirmNewPassword.visibility = View.VISIBLE
+            updatePasswordButton.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
             deleteAccountButton.visibility = View.VISIBLE
         } else {
-            // Якщо користувач не авторизований, показуємо контейнери та ховаємо кнопки
+            // Якщо користувач не авторизований, показуємо контейнери та ховаємо поля для оновлення
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
+            newEmail.visibility = View.GONE
+            updateEmailButton.visibility = View.GONE
+            newPassword.visibility = View.GONE
+            confirmNewPassword.visibility = View.GONE
+            updatePasswordButton.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
             setupLoginAndRegister(view)
         }
 
-        // Обробник кнопки "Вийти"
-        logoutButton.setOnClickListener {
-            auth.signOut()
-            Toast.makeText(context, "Вихід успішний!", Toast.LENGTH_SHORT).show()
-            // Показуємо контейнери для входу/реєстрації та ховаємо кнопки
-            loginContainer.visibility = View.VISIBLE
-            registerContainer.visibility = View.VISIBLE
-            logoutButton.visibility = View.GONE
-            deleteAccountButton.visibility = View.GONE
-        }
+        // Обробник кнопки "Оновити пошту"
+        updateEmailButton.setOnClickListener {
+            val newEmailText = newEmail.text.toString().trim()
+            if (newEmailText.isEmpty()) {
+                newEmail.error = "Введіть нову пошту"
+                return@setOnClickListener
+            }
 
-        // Обробник кнопки "Видалити акаунт"
-        deleteAccountButton.setOnClickListener {
             val user = auth.currentUser
             if (user != null) {
-                user.delete()
+                user.verifyBeforeUpdateEmail(newEmailText)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(context, "Акаунт успішно видалено!", Toast.LENGTH_SHORT).show()
-                            // Показуємо контейнери для входу/реєстрації та ховаємо кнопки
+                            Toast.makeText(
+                                context,
+                                "На нову пошту надіслано лист для підтвердження. " +
+                                        getString(R.string.please_relogin),
+                                Toast.LENGTH_LONG
+                            ).show()
+                            newEmail.text.clear()
+                            // Виконуємо вихід
+                            auth.signOut()
+                            // Показуємо контейнери для входу/реєстрації та ховаємо поля для оновлення
                             loginContainer.visibility = View.VISIBLE
                             registerContainer.visibility = View.VISIBLE
+                            newEmail.visibility = View.GONE
+                            updateEmailButton.visibility = View.GONE
+                            newPassword.visibility = View.GONE
+                            confirmNewPassword.visibility = View.GONE
+                            updatePasswordButton.visibility = View.GONE
                             logoutButton.visibility = View.GONE
                             deleteAccountButton.visibility = View.GONE
+                            // Завершуємо додаток
+                            activity?.finish()
                         } else {
                             Toast.makeText(
                                 context,
-                                "Помилка видалення акаунта: ${task.exception?.message}",
+                                "Помилка оновлення пошти: ${task.exception?.message}",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -87,7 +118,127 @@ class Fragment_Profile : Fragment() {
             }
         }
 
+        // Обробник кнопки "Оновити пароль"
+        updatePasswordButton.setOnClickListener {
+            val newPasswordText = newPassword.text.toString().trim()
+            val confirmNewPasswordText = confirmNewPassword.text.toString().trim()
+
+            // Перевірка, чи паролі співпадають
+            if (newPasswordText.isNotEmpty() || confirmNewPasswordText.isNotEmpty()) {
+                if (newPasswordText != confirmNewPasswordText) {
+                    confirmNewPassword.error = "Паролі не співпадають"
+                    return@setOnClickListener
+                }
+                if (newPasswordText.length < 6) {
+                    newPassword.error = "Пароль має бути довшим за 6 символів"
+                    return@setOnClickListener
+                }
+
+                val user = auth.currentUser
+                if (user != null) {
+                    user.updatePassword(newPasswordText)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(
+                                    context,
+                                    "Пароль успішно оновлено! " + getString(R.string.please_relogin),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                newPassword.text.clear()
+                                confirmNewPassword.text.clear()
+                                // Виконуємо вихід
+                                auth.signOut()
+                                // Показуємо контейнери для входу/реєстрації та ховаємо поля для оновлення
+                                loginContainer.visibility = View.VISIBLE
+                                registerContainer.visibility = View.VISIBLE
+                                newEmail.visibility = View.GONE
+                                updateEmailButton.visibility = View.GONE
+                                newPassword.visibility = View.GONE
+                                confirmNewPassword.visibility = View.GONE
+                                updatePasswordButton.visibility = View.GONE
+                                logoutButton.visibility = View.GONE
+                                deleteAccountButton.visibility = View.GONE
+                                // Завершуємо додаток
+                                activity?.finish()
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Помилка оновлення пароля: ${task.exception?.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                } else {
+                    Toast.makeText(context, "Користувач не авторизований!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(context, "Введіть новий пароль!", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // Обробник кнопки "Вийти"
+        logoutButton.setOnClickListener {
+            auth.signOut()
+            Toast.makeText(context, "Вихід успішний!", Toast.LENGTH_SHORT).show()
+            // Показуємо контейнери для входу/реєстрації та ховаємо поля для оновлення
+            loginContainer.visibility = View.VISIBLE
+            registerContainer.visibility = View.VISIBLE
+            newEmail.visibility = View.GONE
+            updateEmailButton.visibility = View.GONE
+            newPassword.visibility = View.GONE
+            confirmNewPassword.visibility = View.GONE
+            updatePasswordButton.visibility = View.GONE
+            logoutButton.visibility = View.GONE
+            deleteAccountButton.visibility = View.GONE
+        }
+
+        // Обробник кнопки "Видалити акаунт"
+        deleteAccountButton.setOnClickListener {
+            // Показуємо діалог підтвердження
+            showDeleteConfirmationDialog()
+        }
+
         return view
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage(R.string.delete_account_confirmation)
+            .setPositiveButton(R.string.confirm_delete) { _, _ ->
+                // Користувач підтвердив видалення
+                val user = auth.currentUser
+                if (user != null) {
+                    user.delete()
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(context, "Акаунт успішно видалено!", Toast.LENGTH_SHORT).show()
+                                // Показуємо контейнери для входу/реєстрації та ховаємо поля для оновлення
+                                loginContainer.visibility = View.VISIBLE
+                                registerContainer.visibility = View.VISIBLE
+                                newEmail.visibility = View.GONE
+                                updateEmailButton.visibility = View.GONE
+                                newPassword.visibility = View.GONE
+                                confirmNewPassword.visibility = View.GONE
+                                updatePasswordButton.visibility = View.GONE
+                                logoutButton.visibility = View.GONE
+                                deleteAccountButton.visibility = View.GONE
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Помилка видалення акаунта: ${task.exception?.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                } else {
+                    Toast.makeText(context, "Користувач не авторизований!", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton(R.string.cancel) { dialog, _ ->
+                // Користувач скасував видалення
+                dialog.dismiss()
+            }
+        builder.create().show()
     }
 
     private fun setupLoginAndRegister(view: View) {
@@ -124,9 +275,14 @@ class Fragment_Profile : Fragment() {
                         // Очищаємо поля
                         loginEmail.text.clear()
                         loginPassword.text.clear()
-                        // Ховаємо контейнери та показуємо кнопки
+                        // Ховаємо контейнери та показуємо поля для оновлення
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
+                        newEmail.visibility = View.VISIBLE
+                        updateEmailButton.visibility = View.VISIBLE
+                        newPassword.visibility = View.VISIBLE
+                        confirmNewPassword.visibility = View.VISIBLE
+                        updatePasswordButton.visibility = View.VISIBLE
                         logoutButton.visibility = View.VISIBLE
                         deleteAccountButton.visibility = View.VISIBLE
                     } else {
@@ -172,9 +328,14 @@ class Fragment_Profile : Fragment() {
                         registerEmail.text.clear()
                         registerPassword.text.clear()
                         registerConfirmPassword.text.clear()
-                        // Ховаємо контейнери та показуємо кнопки
+                        // Ховаємо контейнери та показуємо поля для оновлення
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
+                        newEmail.visibility = View.VISIBLE
+                        updateEmailButton.visibility = View.VISIBLE
+                        newPassword.visibility = View.VISIBLE
+                        confirmNewPassword.visibility = View.VISIBLE
+                        updatePasswordButton.visibility = View.VISIBLE
                         logoutButton.visibility = View.VISIBLE
                         deleteAccountButton.visibility = View.VISIBLE
                     } else {
@@ -193,16 +354,25 @@ class Fragment_Profile : Fragment() {
         // Перевіряємо, чи користувач уже увійшов
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            Toast.makeText(context, "Користувач уже увійшов: ${currentUser.email}", Toast.LENGTH_SHORT).show()
-            // Ховаємо контейнери та показуємо кнопки
+            // Ховаємо контейнери та показуємо поля для оновлення
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
+            newEmail.visibility = View.VISIBLE
+            updateEmailButton.visibility = View.VISIBLE
+            newPassword.visibility = View.VISIBLE
+            confirmNewPassword.visibility = View.VISIBLE
+            updatePasswordButton.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
             deleteAccountButton.visibility = View.VISIBLE
         } else {
-            // Показуємо контейнери та ховаємо кнопки
+            // Показуємо контейнери та ховаємо поля для оновлення
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
+            newEmail.visibility = View.GONE
+            updateEmailButton.visibility = View.GONE
+            newPassword.visibility = View.GONE
+            confirmNewPassword.visibility = View.GONE
+            updatePasswordButton.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
         }

@@ -20,6 +20,16 @@
     <string name="button_logout">Вийти</string>
     <string name="button_delete_account">Видалити акаунт</string>
 
+    <string name="new_email">Нова пошта</string>
+    <string name="new_password">Новий пароль</string>
+    <string name="button_update_email">Оновити пошту</string>
+    <string name="button_update_password">Оновити пароль</string>
+    <string name="delete_account_confirmation">Ви впевнені, що хочете видалити свій акаунт?</string>
+    <string name="confirm_delete">Видалити</string>
+    <string name="cancel">Скасувати</string>
+    <string name="confirm_new_password">Підтвердіть новий пароль</string>
+    <string name="please_relogin">Будь ласка, вийдіть і увійдіть знову, щоб застосувати зміни.</string>
+
     <string name="button_login">Увійти</string>
     <string name="button_registration">Зареєструватись</string>
 
