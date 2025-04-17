@@ -29,6 +29,8 @@
     <string name="cancel">Скасувати</string>
     <string name="confirm_new_password">Підтвердіть новий пароль</string>
     <string name="please_relogin">Будь ласка, вийдіть і увійдіть знову, щоб застосувати зміни.</string>
+    <string name="forgot_password">Забули пароль?</string>
+    <string name="password_reset_sent">Посилання для скидання пароля надіслано на вашу пошту!</string>
 
     <string name="button_login">Увійти</string>
     <string name="button_registration">Зареєструватись</string>

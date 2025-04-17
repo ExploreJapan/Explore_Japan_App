@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -246,11 +247,38 @@ class Fragment_Profile : Fragment() {
         val loginEmail = view.findViewById<EditText>(R.id.login_email)
         val loginPassword = view.findViewById<EditText>(R.id.login_password)
         val loginButton = view.findViewById<Button>(R.id.login_button)
+        val forgotPassword = view.findViewById<TextView>(R.id.forgot_password)
 
         val registerEmail = view.findViewById<EditText>(R.id.register_email)
         val registerPassword = view.findViewById<EditText>(R.id.register_password)
         val registerConfirmPassword = view.findViewById<EditText>(R.id.register_confirm_password)
         val registerButton = view.findViewById<Button>(R.id.register_button)
+
+        // Обробник кнопки "Забув пароль?"
+        forgotPassword.setOnClickListener {
+            val email = loginEmail.text.toString().trim()
+            if (email.isEmpty()) {
+                loginEmail.error = "Введіть електронну пошту"
+                return@setOnClickListener
+            }
+
+            auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(
+                            context,
+                            getString(R.string.password_reset_sent),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Помилка: ${task.exception?.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+        }
 
         // Обробник кнопки "Увійти"
         loginButton.setOnClickListener {
