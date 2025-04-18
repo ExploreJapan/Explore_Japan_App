@@ -47,5 +47,12 @@
     <!--    Страница настроек-->
     <string name="options_title">Налаштування додатку</string>
 
+    <style name="BottomNavigationTextAppearance" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:fontFamily">@font/fjord_one</item>  <!-- Твой шрифт -->
+        <item name="android:textSize">14sp</item>
+    </style>
 
 </resources>
+
+
+
