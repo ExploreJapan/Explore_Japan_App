@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <gradient
-        android:startColor="@color/cream_washi"
-    android:centerColor="@color/pastel_green_tea"
-    android:endColor="@color/lavender"
-    android:angle="145" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Слой 1: Градиент -->
+    <item>
+        <shape>
+            <gradient
+                android:startColor="@color/cream_washi"
+                android:centerColor="@color/pastel_green_tea"
+                android:endColor="@color/lavender"
+                android:angle="145" />
+        </shape>
+    </item>
+    <!-- Слой 2: Паттерн из 4 иконок -->
+    <item>
+        <bitmap
+            android:src="@drawable/icons"
+            android:tileMode="repeat"
+            android:alpha="0.1" />
+    </item>
+</layer-list>

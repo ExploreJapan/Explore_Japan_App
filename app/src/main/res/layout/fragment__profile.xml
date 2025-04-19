@@ -11,8 +11,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@color/lightred"
+        android:layout_height="74dp"
+        android:background="@color/grad3"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="0dp">
 
@@ -26,17 +26,6 @@
             android:src="@drawable/horizontal_line"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/flag_japan"
-            android:layout_width="63dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="15dp"
-            android:contentDescription="@string/hint_flag"
-            android:src="@drawable/japanflag"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
