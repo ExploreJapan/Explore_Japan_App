@@ -52,6 +52,9 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <string name="title_activity_fragmentmap">fragmentmap</string>
+    <string name="map_type">Тип мапи</string>
+
 </resources>
 
 

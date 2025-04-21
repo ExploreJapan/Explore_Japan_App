@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-android")
     alias(libs.plugins.gms)
+    alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
 }
 
 android {
@@ -75,4 +76,5 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.fragment:fragment-ktx:1.7.1")
     implementation ("com.google.android.material:material:1.9.0")
+    implementation ("com.google.android.gms:play-services-maps:18.2.0")
 }
