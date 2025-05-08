@@ -30,7 +30,7 @@ class Fragment_Profile : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment__profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         // Ініціалізація Firebase Authentication
         auth = FirebaseAuth.getInstance()

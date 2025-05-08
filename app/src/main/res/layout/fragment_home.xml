@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_background">
+
+    <!-- Шапка -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:background="@color/grad3"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/top_line"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:scaleX="5"
+            android:scaleY="1"
+            android:src="@drawable/horizontal_line"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="@font/zen_old_mincho"
+            android:gravity="center_vertical"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- ScrollView для прокрутки блоков -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true"
+        android:padding="8dp">
+
+        <GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:rowCount="5">
+
+            <!-- Блок 1: Tokyo -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tokyo_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/tokyo_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/tokyo_image" />
+
+                    <TextView
+                        android:id="@+id/tokyo_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/tokyo"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 2: Osaka -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/osaka_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/osaka_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/osaka_image" />
+
+                    <TextView
+                        android:id="@+id/osaka_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/osaka"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 3: Kyoto -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/kyoto_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/kyoto_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/kyoto_image" />
+
+                    <TextView
+                        android:id="@+id/kyoto_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/kyoto"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 4: Hiroshima -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/hiroshima_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/hiroshima_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/hiroshima_image" />
+
+                    <TextView
+                        android:id="@+id/hiroshima_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/hiroshima"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 5: Sapporo -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/sapporo_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/sapporo_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sapporo_image" />
+
+                    <TextView
+                        android:id="@+id/sapporo_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/sapporo"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 6: Fukuoka -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/fukuoka_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/fukuoka_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/fukuoka_image" />
+
+                    <TextView
+                        android:id="@+id/fukuoka_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/fukuoka"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 7: Nagoya -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/nagoya_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/nagoya_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/nagoya_image" />
+
+                    <TextView
+                        android:id="@+id/nagoya_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/nagoya"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 8: Yokohama -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/yokohama_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/yokohama_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/niigata_image" />
+
+                    <TextView
+                        android:id="@+id/yokohama_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/niigata"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 9: Kobe -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/kobe_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/kobe_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/sendai_image" />
+
+                    <TextView
+                        android:id="@+id/kobe_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/sendai"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 10: Nara -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/nara_card"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/nara_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/naha_image" />
+
+                    <TextView
+                        android:id="@+id/nara_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/naha"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </GridLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

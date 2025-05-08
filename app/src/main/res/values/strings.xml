@@ -38,6 +38,39 @@
     <!--    Главная страница-->
     <string name="home_title">Оберіть місто для перегляду інформації</string>
 
+    <!--    Города-->
+    <!--    Tokyo-->
+    <string name="tokyo">Токіо</string>
+
+    <!--    Kyoto-->
+    <string name="kyoto">Кіото</string>
+
+    <!--    Osaka-->
+    <string name="osaka">Осака</string>
+
+    <!--    Sapporo-->
+    <string name="sapporo">Саппоро</string>
+
+    <!--    Fukuoka-->
+    <string name="fukuoka">Фукуока</string>
+
+    <!--    Hiroshima-->
+    <string name="hiroshima">Хіросіма</string>
+
+    <!--    Nagoya-->
+    <string name="nagoya">Нагоя</string>
+
+    <!--    Niigata-->
+    <string name="niigata">Ніїґата</string>
+
+    <!--    Sendai-->
+    <string name="sendai">Сендай</string>
+
+    <!--    Naha-->
+    <string name="naha">Наха</string>
+
+
+
     <!--    Страница карты-->
     <string name="map_title">Карта Японії</string>
 
@@ -54,6 +87,8 @@
 
     <string name="title_activity_fragmentmap">fragmentmap</string>
     <string name="map_type">Тип мапи</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
 
