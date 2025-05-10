@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -44,15 +45,271 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tokyo"
-        android:textSize="34sp"
+    <!-- Прокручиваемый контейнер для блоков статей -->
+    <ScrollView
+        android:id="@+id/main_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="56dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header" />
+        app:layout_constraintEnd_toEndOf="parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- Блок 1: Проживання -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/article_living"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/article_living_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Проживання"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 2: Транспорт -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/article_transport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/article_transport_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Транспорт"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 3: Їжа -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/article_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/article_food_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Їжа"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Блок 4: Визначні пам’ятки -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/article_sights"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/article_sights_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Визначні пам’ятки"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Содержимое для статьи "Проживання" -->
+            <LinearLayout
+                android:id="@+id/content_living"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="В Токио можно найти отели, хостелы и традиционные рёканы. Цены варьируются от бюджетных до люксовых вариантов..."
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Содержимое для статьи "Транспорт" -->
+            <LinearLayout
+                android:id="@+id/content_transport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="150dp"
+                    android:src="@android:drawable/ic_menu_directions"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Токио имеет развитую систему метро, поездов JR и автобусов. Рекомендуется приобрести Suica или Pasmo карту..."
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Содержимое для статьи "Їжа" -->
+            <LinearLayout
+                android:id="@+id/content_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза...
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
+
+"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="16dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@android:drawable/ic_menu_my_calendar"
+                    android:scaleType="centerCrop" />
+            </LinearLayout>
+
+            <!-- Содержимое для статьи "Визначні пам’ятки" -->
+            <LinearLayout
+                android:id="@+id/content_sights"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@android:drawable/ic_menu_mapmode"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Посетите Токио Ски, Императорский дворец, храм Сэнсо-дзи и район Синдзюку..."
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@android:drawable/ic_menu_mapmode"
+                    android:scaleType="centerCrop"
+                    android:layout_marginTop="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Оверлей -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/overlay_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="56dp"
+        android:visibility="gone"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/overlay_content_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Контейнер для динамического содержимого -->
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/closeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="start|top" />
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
