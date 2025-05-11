@@ -63,28 +63,48 @@
             android:orientation="vertical"
             android:padding="8dp">
 
+
+            <TextView
+                android:id="@+id/city_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/fjord_one"
+                android:text="@string/tokyo"
+                android:textSize="32sp"
+                android:textColor="@color/black2"
+                android:textStyle="bold" />
+
             <!-- Блок 1: Проживання -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/article_living"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="22dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:background="@drawable/overlay_border"
+                    android:orientation="horizontal"
                     android:padding="16dp">
 
                     <TextView
                         android:id="@+id/article_living_title"
-                        android:layout_width="match_parent"
+                        android:layout_width="290dp"
                         android:layout_height="wrap_content"
-                        android:text="Проживання"
-                        android:textSize="18sp"
+                        android:fontFamily="@font/zen_old_mincho"
+                        android:text="@string/living"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/add" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -94,22 +114,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="22dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:background="@drawable/overlay_border"
+                    android:orientation="horizontal"
                     android:padding="16dp">
 
                     <TextView
                         android:id="@+id/article_transport_title"
-                        android:layout_width="match_parent"
+                        android:layout_width="290dp"
                         android:layout_height="wrap_content"
-                        android:text="Транспорт"
-                        android:textSize="18sp"
+                        android:fontFamily="@font/zen_old_mincho"
+                        android:text="@string/transport"
+                        android:textSize="26sp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/add2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/add" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -119,47 +147,63 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="22dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:background="@drawable/overlay_border"
+                    android:orientation="horizontal"
                     android:padding="16dp">
 
                     <TextView
                         android:id="@+id/article_food_title"
-                        android:layout_width="match_parent"
+                        android:layout_width="290dp"
                         android:layout_height="wrap_content"
-                        android:text="Їжа"
-                        android:textSize="18sp"
+                        android:fontFamily="@font/zen_old_mincho"
+                        android:text="@string/food"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/add3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/add" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- Блок 4: Визначні пам’ятки -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/article_sights"
+                android:id="@+id/article_place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardCornerRadius="22dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:background="@drawable/overlay_border"
+                    android:orientation="horizontal"
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/article_sights_title"
-                        android:layout_width="match_parent"
+                        android:id="@+id/article_place_title"
+                        android:layout_width="290dp"
                         android:layout_height="wrap_content"
-                        android:text="Визначні пам’ятки"
-                        android:textSize="18sp"
+                        android:fontFamily="@font/zen_old_mincho"
+                        android:text="@string/place"
+                        android:textSize="24sp"
                         android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/add4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/add" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -171,18 +215,57 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:src="@android:drawable/ic_menu_camera"
-                    android:scaleType="centerCrop"
-                    android:layout_marginBottom="16dp" />
-
-                <TextView
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="В Токио можно найти отели, хостелы и традиционные рёканы. Цены варьируются от бюджетных до люксовых вариантов..."
-                    android:textSize="16sp" />
+                    android:padding="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <!-- Заголовок статьи -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/living"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Подраздел 1.1: Середні ціни на проживання -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="1.1. Середні ціни на проживання"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/living_one_text"
+                            android:textSize="16sp"
+                            android:layout_marginBottom="16dp" />
+
+                        <!-- Подраздел 1.2: Рекомендовані районы для проживання -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/living_two"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/living_two_text"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </ScrollView>
             </LinearLayout>
 
             <!-- Содержимое для статьи "Транспорт" -->
@@ -220,20 +303,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза...
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза.
-
-"
+                    android:text="Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза..."
                     android:textSize="16sp"
                     android:layout_marginBottom="16dp" />
 
@@ -246,7 +316,7 @@
 
             <!-- Содержимое для статьи "Визначні пам’ятки" -->
             <LinearLayout
-                android:id="@+id/content_sights"
+                android:id="@+id/content_place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -281,35 +351,44 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="56dp"
+        android:layout_marginBottom="24dp"
         android:visibility="gone"
-        app:cardCornerRadius="16dp"
+        app:cardCornerRadius="20dp"
         app:cardElevation="4dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/header">
 
         <LinearLayout
-            android:id="@+id/overlay_content_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <!-- Контейнер для динамического содержимого -->
+            <LinearLayout
+                android:id="@+id/overlay_content_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/overlay_border"
+                android:padding="20dp">
+
+                <!-- Контейнер для динамического содержимого -->
+            </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/closeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="X"
+        <!-- Кнопка возврата (слева сверху) -->
+        <ImageButton
+            android:id="@+id/backButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="6dp"
+            android:layout_gravity="start|top"
             android:background="@android:color/transparent"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="start|top" />
+            android:src="@drawable/back_button"
+            android:scaleType="fitCenter" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

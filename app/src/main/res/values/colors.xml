@@ -14,8 +14,8 @@
     <color name="red">#9D332C</color>
     <color name="orange">#C77E14</color>
     <color name="lightorange">#E59E5D</color>
-    <color name="brown">#814336</color>
-    <color name="grad1">#E39C5B</color>
+    <color name="brown">#FFDEAD</color>
+    <color name="grad1">#bdb49b</color>
     <color name="grad2">#6C1626</color>
     <color name="grad3">#90473A</color>
     <color name="grad4">#BF774D</color>
@@ -27,5 +27,7 @@
     <color name="lavender">#E6E6FA</color>
     <color name="darkgrey">#1f1f1f</color>
     <color name="oldlace">#F5F5DC</color>
+    <color name="blue">#B0E0E6</color>
+    <color name="black2">#333333</color>
 
 </resources>
