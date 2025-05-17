@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/gradient_background"
@@ -63,7 +62,6 @@
             android:orientation="vertical"
             android:padding="8dp"
             android:visibility="visible">
-
 
             <TextView
                 android:id="@+id/city_title"
@@ -211,6 +209,7 @@
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
                 </LinearLayout>
+
             </androidx.cardview.widget.CardView>
 
             <!-- Содержимое для статьи "Проживання" -->
@@ -226,10 +225,10 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                         <!-- Заголовок статьи -->
                         <TextView
@@ -246,106 +245,36 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/living_one"
+                            android:text="@string/living_one_one"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
-                        <!-- Первая треть текста -->
+                        <!-- Текст -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:text="@string/living_one_text_part1"
-                            android:textSize="12sp" />
-
-                        <!-- Средняя часть: текст слева, фото справа -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            android:orientation="horizontal">
-
-                            <!-- Текст слева -->
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_marginEnd="8dp"
-                                android:layout_weight="1"
-                                android:text="@string/living_one_text_part2"
-                                android:textAlignment="inherit"
-                                android:textSize="12sp" />
-
-                            <!-- Фото справа -->
-                            <ImageView
-                                android:layout_width="98dp"
-                                android:layout_height="150dp"
-                                android:layout_marginEnd="8dp"
-                                android:layout_weight="1"
-                                android:adjustViewBounds="true"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/tokyo_11" />
-                        </LinearLayout>
-
-                        <!-- Последняя треть текста -->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="-14dp"
-                            android:text="@string/living_one_text_part3"
-                            android:textSize="12sp" />
+                            android:text="@string/tok_living_one_one_text"
+                            android:textSize="16sp" />
 
                         <!-- Подраздел 1.2: Рекомендовані райони для проживання -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="2dp"
-                            android:text="@string/living_two"
+                            android:text="@string/living_one_two"
                             android:textAlignment="center"
                             android:textSize="20sp"
                             android:textStyle="bold" />
 
-                        <!-- Первая треть текста -->
+                        <!-- Текст -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="4dp"
-                            android:text="@string/living_two_text_part1"
-                            android:textSize="12sp" />
-
-                        <!-- Средняя часть: фото слева, текст справа -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            android:orientation="horizontal">
-
-                            <!-- Фото слева -->
-                            <ImageView
-                                android:layout_width="98dp"
-                                android:layout_height="150dp"
-                                android:layout_marginEnd="8dp"
-                                android:layout_weight="1"
-                                android:adjustViewBounds="true"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/tokyo_12" />
-
-                            <!-- Вторая треть текста справа -->
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="@string/living_two_text_part2"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <!-- Последняя треть текста -->
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="-14dp"
-                            android:text="@string/living_two_text_part3"
-                            android:textSize="12sp" />
+                            android:text="@string/tok_living_one_two_text"
+                            android:textSize="16sp" />
                     </LinearLayout>
                 </ScrollView>
             </LinearLayout>
@@ -355,23 +284,156 @@
                 android:id="@+id/content_transport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="150dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_weight="1"
-                    android:scaleType="centerCrop"
-                    android:src="@android:drawable/ic_menu_directions" />
-
-                <TextView
-                    android:layout_width="0dp"
+                <ScrollView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Токио имеет развитую систему метро, поездов JR и автобусов. Рекомендуется приобрести Suica или Pasmo карту..."
-                    android:textSize="16sp" />
+                    android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                        <!-- Заголовок статьи -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/transport"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <!-- Подраздел 2.1: Внутрішні авіаперельоти -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/transport_two_one"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_transport_two_one_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 2.1.1: Як дістатися з аеропорту до міста -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/transport_two_one_one"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_transport_two_one_one_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 2.2: Залізничний транспорт -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/transport_two_two"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_transport_two_two_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 2.2.1: Метро -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/transport_two_two_one"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_transport_two_two_one_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 2.3: Місцевий транспорт -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/transport_two_three"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_transport_two_three_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 2.4: Оренда авто -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/transport_two_four"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_transport_two_four_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 2.5: Піші маршрути -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/transport_two_five"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_transport_two_five_text"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </ScrollView>
             </LinearLayout>
 
             <!-- Содержимое для статьи "Їжа" -->
@@ -382,50 +444,314 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <TextView
+                <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="Попробуйте суши, рамен, темпуру и уличную еду в районах Асакуса и Гинза..."
-                    android:textSize="16sp" />
+                    android:padding="16dp">
 
-                <ImageView
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@android:drawable/ic_menu_my_calendar" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                        <!-- Заголовок статьи -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/food"
+                            android:textAlignment="center"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <!-- Подраздел 3.1: Ресторани -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/food_three_one"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_food_three_one_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 3.1.1: Ціни в ресторанах -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/food_three_one_one"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_food_three_one_one_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 3.1.2: Рекомендовані ресторани -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/food_three_one_two"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_food_three_one_two_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 3.1.3: Типи закладів -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:text="@string/food_three_one_three"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_food_three_one_three_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 3.2: Вулична їжа -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/food_three_two"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_food_three_two_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 3.3: Ціни в супермаркетах -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/food_three_three"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_food_three_three_text"
+                            android:textSize="16sp" />
+
+                        <!-- Подраздел 3.4: Місцеві делікатеси -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:text="@string/food_three_four"
+                            android:textAlignment="center"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <!-- Текст -->
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="@string/tok_food_three_four_text"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+                </ScrollView>
             </LinearLayout>
 
-            <!-- Содержимое для статьи "Визначні пам’ятки" -->
-            <LinearLayout
-                android:id="@+id/content_place"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+    <!-- Содержимое для статьи "Визначні пам'ятки" -->
+    <LinearLayout
+        android:id="@+id/content_place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginBottom="16dp"
-                    android:scaleType="centerCrop"
-                    android:src="@android:drawable/ic_menu_mapmode" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+                <!-- Заголовок статьи -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Посетите Токио Ски, Императорский дворец, храм Сэнсо-дзи и район Синдзюку..."
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/place"
+                    android:textAlignment="center"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <!-- Подраздел 4.1: Токійський імператорський палац  -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/tok_place_four_one"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Текст -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tok_place_four_one_text"
                     android:textSize="16sp" />
 
-                <ImageView
+            <!-- Фото -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:src="@drawable/tokyo_1"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
+
+                <!-- Подраздел 4.2: Сіндзюку Гьоен  -->
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/tok_place_four_two"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+
+                <!-- Текст -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tok_place_four_two_text"
+                    android:textSize="16sp" />
+
+            <!-- Фото -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:src="@drawable/tokyo_2"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
+
+                <!-- Подраздел 4.3: Монастир Сенсо   -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/tok_place_four_three"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Текст -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tok_place_four_three_text"
+                    android:textSize="16sp" />
+
+            <!-- Фото -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="220dp"
+                android:src="@drawable/tokyo_3"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
+
+                <!-- Подраздел 4.4: Токійська вежа  -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/tok_place_four_four"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Текст -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tok_place_four_four_text"
+                    android:textSize="16sp" />
+
+            <!-- Фото -->
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="220dp"
+                android:src="@drawable/tokyo_4"
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true" />
+
+                <!-- Подраздел 4.5: Рибний ринок Цукідзі   -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/tok_place_four_five"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <!-- Текст -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tok_place_four_five_text"
+                    android:textSize="16sp" />
+
+                 <!-- Фото -->
+                 <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="220dp"
+                    android:src="@drawable/tokyo_5"
                     android:scaleType="centerCrop"
-                    android:src="@android:drawable/ic_menu_mapmode" />
+                    android:adjustViewBounds="true" />
+        </LinearLayout>
+        </ScrollView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 
     <!-- Оверлей -->
     <androidx.cardview.widget.CardView
