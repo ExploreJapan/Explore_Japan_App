@@ -1,59 +1,128 @@
 package com.example.explorejapanapp
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Bundle import android.util.Log import android.view.LayoutInflater import android.view.View import android.view.ViewGroup import android.widget.ImageButton import android.widget.LinearLayout import androidx.fragment.app.Fragment
+import com.example.explorejapanapp.databinding.FragmentCitySendaiBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [City_Sendai.newInstance] factory method to
- * create an instance of this fragment.
- */
 class City_Sendai : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentCitySendaiBinding? = null
+    private val binding get() = _binding!!
+    private var isArticleOpen = false
+    private var currentArticleContent: View? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_city__sendai, container, false)
+        _binding = FragmentCitySendaiBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment City_Sendai.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            City_Sendai().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Привязка карточек к обработчикам
+        binding.articleLiving.setOnClickListener { showArticleContent("Проживання") }
+        binding.articleTransport.setOnClickListener { showArticleContent("Транспорт") }
+        binding.articleFood.setOnClickListener { showArticleContent("Їжа") }
+        binding.articlePlace.setOnClickListener { showArticleContent("Пам`ятки культури") }
+    }
+
+    private fun showArticleContent(title: String) {
+        if (!isArticleOpen) {
+            Log.d("CitySendai", "Starting showArticleContent for title: $title")
+
+            // Проверяем, что binding.mainContent и binding.overlayContainer не null
+            if (binding.mainContent == null) {
+                Log.e("CitySendai", "binding.mainContent is null")
+                return
+            }
+            if (binding.overlayContainer == null) {
+                Log.e("CitySendai", "binding.overlayContainer is null")
+                return
+            }
+
+            // Скрываем основной контент и показываем оверлей
+            binding.mainContent.visibility = View.GONE
+            binding.overlayContainer.visibility = View.VISIBLE
+
+            // Проверяем размеры оверлея
+            binding.overlayContainer.post {
+                Log.d("CitySendai", "overlayContainer width: ${binding.overlayContainer.width}, height: ${binding.overlayContainer.height}")
+            }
+
+            // Находим контейнер в оверлее
+            val overlayContentContainer = binding.overlayContainer.findViewById<LinearLayout>(R.id.overlay_content_container)
+            if (overlayContentContainer == null) {
+                Log.e("CitySendai", "overlayContentContainer is null")
+                return
+            }
+
+            // Удаляем предыдущее содержимое из оверлея
+            overlayContentContainer.removeAllViews()
+
+            // Определяем, какой контент показывать
+            currentArticleContent = when (title) {
+                "Проживання" -> binding.contentLiving
+                "Транспорт" -> binding.contentTransport
+                "Їжа" -> binding.contentFood
+                "Пам`ятки культури" -> binding.contentPlace
+                else -> null
+            }
+
+            if (currentArticleContent == null) {
+                Log.e("CitySendai", "currentArticleContent is null for title: $title")
+                return
+            }
+
+            // Добавляем содержимое в оверлей
+            currentArticleContent?.let { content ->
+                Log.d("CitySendai", "Current article content ID: ${content.id}")
+                // Проверяем, есть ли у представления родитель, и удаляем его
+                if (content.parent != null) {
+                    (content.parent as? ViewGroup)?.removeView(content)
+                    Log.d("CitySendai", "Removed view from parent: ${content.id}")
+                }
+
+                content.visibility = View.VISIBLE
+                try {
+                    overlayContentContainer.addView(content)
+                    Log.d("CitySendai", "Content added to overlay: ${content.id}")
+                    Log.d("CitySendai", "overlayContentContainer child count: ${overlayContentContainer.childCount}")
+                } catch (e: Exception) {
+                    Log.e("CitySendai", "Error adding content to overlay: ${e.message}")
                 }
             }
+
+            // Настраиваем кнопку возврата
+            val backButton = binding.overlayContainer.findViewById<ImageButton>(R.id.backButton)
+            if (backButton == null) {
+                Log.e("CitySendai", "backButton is null")
+                return
+            }
+
+            // Кнопка возврата: закрывает оверлей и возвращает к списку статей
+            backButton.setOnClickListener {
+                Log.d("CitySendai", "Back button clicked")
+                binding.overlayContainer.visibility = View.GONE
+                binding.mainContent.visibility = View.VISIBLE
+                currentArticleContent?.let { content ->
+                    if (content.parent != null) {
+                        (content.parent as? ViewGroup)?.removeView(content)
+                    }
+                    content.visibility = View.GONE
+                }
+                isArticleOpen = false
+            }
+
+            isArticleOpen = true
+            Log.d("CitySendai", "Article opened successfully")
+        }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }
