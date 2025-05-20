@@ -5,7 +5,7 @@
     <!-- Дозволи для Google Maps -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Для підтримки OpenGL ES 2.0, потрібного для Google Maps -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -28,8 +28,22 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Підтримка Deep Links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="explorejapanapp"
+                    android:host="tokyo" />
+                <!-- Додайте інші міста, якщо потрібно -->
+                <!-- Наприклад:
+                <data
+                    android:scheme="explorejapanapp"
+                    android:host="osaka" />
+                -->
             </intent-filter>
         </activity>
     </application>

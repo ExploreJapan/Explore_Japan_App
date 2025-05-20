@@ -1,30 +1,39 @@
 package com.example.explorejapanapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Fragment_Profile : Fragment() {
 
     private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     private lateinit var loginContainer: ConstraintLayout
     private lateinit var registerContainer: ConstraintLayout
-    private lateinit var logoutButton: Button
-    private lateinit var deleteAccountButton: Button
+    private lateinit var logoutButton: MaterialButton
+    private lateinit var deleteAccountButton: MaterialButton
     private lateinit var newEmail: EditText
-    private lateinit var updateEmailButton: Button
+    private lateinit var updateEmailButton: MaterialButton
     private lateinit var newPassword: EditText
     private lateinit var confirmNewPassword: EditText
-    private lateinit var updatePasswordButton: Button
+    private lateinit var updatePasswordButton: MaterialButton
+    private lateinit var favoritesRecyclerView: RecyclerView
+    private lateinit var favoritesAdapter: FavoritesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,10 +41,9 @@ class Fragment_Profile : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
-        // Ініціалізація Firebase Authentication
         auth = FirebaseAuth.getInstance()
+        db = FirebaseFirestore.getInstance()
 
-        // Знаходимо контейнери для входу, реєстрації та кнопки
         loginContainer = view.findViewById(R.id.login_container)
         registerContainer = view.findViewById(R.id.register_container)
         logoutButton = view.findViewById(R.id.logout_button)
@@ -45,10 +53,17 @@ class Fragment_Profile : Fragment() {
         newPassword = view.findViewById(R.id.new_password)
         confirmNewPassword = view.findViewById(R.id.confirm_new_password)
         updatePasswordButton = view.findViewById(R.id.update_password_button)
+        favoritesRecyclerView = view.findViewById(R.id.favoritesRecyclerView)
 
-        // Перевіряємо стан авторизації та показуємо/ховаємо елементи
+        // Налаштування RecyclerView для списку "Обране"
+        favoritesRecyclerView.layoutManager = LinearLayoutManager(context)
+        favoritesAdapter = FavoritesAdapter { deepLink: String ->
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
+            startActivity(intent)
+        }
+        favoritesRecyclerView.adapter = favoritesAdapter
+
         if (auth.currentUser != null) {
-            // Якщо користувач авторизований, ховаємо контейнери та показуємо поля для оновлення
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
             newEmail.visibility = View.VISIBLE
@@ -58,8 +73,9 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
             deleteAccountButton.visibility = View.VISIBLE
+            favoritesRecyclerView.visibility = View.VISIBLE
+            loadFavorites()
         } else {
-            // Якщо користувач не авторизований, показуємо контейнери та ховаємо поля для оновлення
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
             newEmail.visibility = View.GONE
@@ -69,10 +85,12 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
-            setupLoginAndRegister(view)
+            favoritesRecyclerView.visibility = View.GONE
         }
 
-        // Обробник кнопки "Оновити пошту"
+        // Виклик методу для налаштування кнопок входу та реєстрації
+        setupLoginAndRegister(view)
+
         updateEmailButton.setOnClickListener {
             val newEmailText = newEmail.text.toString().trim()
             if (newEmailText.isEmpty()) {
@@ -92,9 +110,7 @@ class Fragment_Profile : Fragment() {
                                 Toast.LENGTH_LONG
                             ).show()
                             newEmail.text.clear()
-                            // Виконуємо вихід
                             auth.signOut()
-                            // Показуємо контейнери для входу/реєстрації та ховаємо поля для оновлення
                             loginContainer.visibility = View.VISIBLE
                             registerContainer.visibility = View.VISIBLE
                             newEmail.visibility = View.GONE
@@ -104,7 +120,7 @@ class Fragment_Profile : Fragment() {
                             updatePasswordButton.visibility = View.GONE
                             logoutButton.visibility = View.GONE
                             deleteAccountButton.visibility = View.GONE
-                            // Завершуємо додаток
+                            favoritesRecyclerView.visibility = View.GONE
                             activity?.finish()
                         } else {
                             Toast.makeText(
@@ -119,12 +135,10 @@ class Fragment_Profile : Fragment() {
             }
         }
 
-        // Обробник кнопки "Оновити пароль"
         updatePasswordButton.setOnClickListener {
             val newPasswordText = newPassword.text.toString().trim()
             val confirmNewPasswordText = confirmNewPassword.text.toString().trim()
 
-            // Перевірка, чи паролі співпадають
             if (newPasswordText.isNotEmpty() || confirmNewPasswordText.isNotEmpty()) {
                 if (newPasswordText != confirmNewPasswordText) {
                     confirmNewPassword.error = "Паролі не співпадають"
@@ -147,9 +161,7 @@ class Fragment_Profile : Fragment() {
                                 ).show()
                                 newPassword.text.clear()
                                 confirmNewPassword.text.clear()
-                                // Виконуємо вихід
                                 auth.signOut()
-                                // Показуємо контейнери для входу/реєстрації та ховаємо поля для оновлення
                                 loginContainer.visibility = View.VISIBLE
                                 registerContainer.visibility = View.VISIBLE
                                 newEmail.visibility = View.GONE
@@ -159,7 +171,7 @@ class Fragment_Profile : Fragment() {
                                 updatePasswordButton.visibility = View.GONE
                                 logoutButton.visibility = View.GONE
                                 deleteAccountButton.visibility = View.GONE
-                                // Завершуємо додаток
+                                favoritesRecyclerView.visibility = View.GONE
                                 activity?.finish()
                             } else {
                                 Toast.makeText(
@@ -177,11 +189,9 @@ class Fragment_Profile : Fragment() {
             }
         }
 
-        // Обробник кнопки "Вийти"
         logoutButton.setOnClickListener {
             auth.signOut()
             Toast.makeText(context, "Вихід успішний!", Toast.LENGTH_SHORT).show()
-            // Показуємо контейнери для входу/реєстрації та ховаємо поля для оновлення
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
             newEmail.visibility = View.GONE
@@ -191,29 +201,47 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
+            favoritesRecyclerView.visibility = View.GONE
         }
 
-        // Обробник кнопки "Видалити акаунт"
         deleteAccountButton.setOnClickListener {
-            // Показуємо діалог підтвердження
             showDeleteConfirmationDialog()
         }
 
         return view
     }
 
+    private fun loadFavorites() {
+        val user = auth.currentUser
+        if (user != null) {
+            db.collection("users").document(user.uid)
+                .collection("favorites")
+                .get()
+                .addOnSuccessListener { documents ->
+                    val favorites = documents.map { doc ->
+                        FavoriteItem(
+                            title = doc.getString("title") ?: "",
+                            deepLink = doc.getString("url") ?: ""
+                        )
+                    }
+                    favoritesAdapter.submitList(favorites)
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(context, "Помилка завантаження обраного: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
     private fun showDeleteConfirmationDialog() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage(R.string.delete_account_confirmation)
             .setPositiveButton(R.string.confirm_delete) { _, _ ->
-                // Користувач підтвердив видалення
                 val user = auth.currentUser
                 if (user != null) {
                     user.delete()
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Toast.makeText(context, "Акаунт успішно видалено!", Toast.LENGTH_SHORT).show()
-                                // Показуємо контейнери для входу/реєстрації та ховаємо поля для оновлення
                                 loginContainer.visibility = View.VISIBLE
                                 registerContainer.visibility = View.VISIBLE
                                 newEmail.visibility = View.GONE
@@ -223,6 +251,7 @@ class Fragment_Profile : Fragment() {
                                 updatePasswordButton.visibility = View.GONE
                                 logoutButton.visibility = View.GONE
                                 deleteAccountButton.visibility = View.GONE
+                                favoritesRecyclerView.visibility = View.GONE
                             } else {
                                 Toast.makeText(
                                     context,
@@ -236,25 +265,22 @@ class Fragment_Profile : Fragment() {
                 }
             }
             .setNegativeButton(R.string.cancel) { dialog, _ ->
-                // Користувач скасував видалення
                 dialog.dismiss()
             }
         builder.create().show()
     }
 
     private fun setupLoginAndRegister(view: View) {
-        // Знаходимо елементи з макета
         val loginEmail = view.findViewById<EditText>(R.id.login_email)
         val loginPassword = view.findViewById<EditText>(R.id.login_password)
-        val loginButton = view.findViewById<Button>(R.id.login_button)
+        val loginButton = view.findViewById<MaterialButton>(R.id.login_button)
         val forgotPassword = view.findViewById<TextView>(R.id.forgot_password)
 
         val registerEmail = view.findViewById<EditText>(R.id.register_email)
         val registerPassword = view.findViewById<EditText>(R.id.register_password)
         val registerConfirmPassword = view.findViewById<EditText>(R.id.register_confirm_password)
-        val registerButton = view.findViewById<Button>(R.id.register_button)
+        val registerButton = view.findViewById<MaterialButton>(R.id.register_button)
 
-        // Обробник кнопки "Забув пароль?"
         forgotPassword.setOnClickListener {
             val email = loginEmail.text.toString().trim()
             if (email.isEmpty()) {
@@ -280,12 +306,11 @@ class Fragment_Profile : Fragment() {
                 }
         }
 
-        // Обробник кнопки "Увійти"
         loginButton.setOnClickListener {
+            Log.d("FragmentProfile", "Login button clicked")
             val email = loginEmail.text.toString().trim()
             val password = loginPassword.text.toString().trim()
 
-            // Перевірка, чи заповнені поля
             if (email.isEmpty()) {
                 loginEmail.error = "Введіть електронну пошту"
                 return@setOnClickListener
@@ -295,15 +320,12 @@ class Fragment_Profile : Fragment() {
                 return@setOnClickListener
             }
 
-            // Вхід через Firebase
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(context, "Вхід успішний!", Toast.LENGTH_SHORT).show()
-                        // Очищаємо поля
                         loginEmail.text.clear()
                         loginPassword.text.clear()
-                        // Ховаємо контейнери та показуємо поля для оновлення
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
                         newEmail.visibility = View.VISIBLE
@@ -313,6 +335,8 @@ class Fragment_Profile : Fragment() {
                         updatePasswordButton.visibility = View.VISIBLE
                         logoutButton.visibility = View.VISIBLE
                         deleteAccountButton.visibility = View.VISIBLE
+                        favoritesRecyclerView.visibility = View.VISIBLE
+                        loadFavorites()
                     } else {
                         Toast.makeText(
                             context,
@@ -323,13 +347,12 @@ class Fragment_Profile : Fragment() {
                 }
         }
 
-        // Обробник кнопки "Зареєструватися"
         registerButton.setOnClickListener {
+            Log.d("FragmentProfile", "Register button clicked")
             val email = registerEmail.text.toString().trim()
             val password = registerPassword.text.toString().trim()
             val confirmPassword = registerConfirmPassword.text.toString().trim()
 
-            // Перевірка, чи заповнені поля
             if (email.isEmpty()) {
                 registerEmail.error = "Введіть електронну пошту"
                 return@setOnClickListener
@@ -347,16 +370,13 @@ class Fragment_Profile : Fragment() {
                 return@setOnClickListener
             }
 
-            // Реєстрація через Firebase
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(context, "Реєстрація успішна!", Toast.LENGTH_SHORT).show()
-                        // Очищаємо поля
                         registerEmail.text.clear()
                         registerPassword.text.clear()
                         registerConfirmPassword.text.clear()
-                        // Ховаємо контейнери та показуємо поля для оновлення
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
                         newEmail.visibility = View.VISIBLE
@@ -366,6 +386,8 @@ class Fragment_Profile : Fragment() {
                         updatePasswordButton.visibility = View.VISIBLE
                         logoutButton.visibility = View.VISIBLE
                         deleteAccountButton.visibility = View.VISIBLE
+                        favoritesRecyclerView.visibility = View.VISIBLE
+                        loadFavorites()
                     } else {
                         Toast.makeText(
                             context,
@@ -379,10 +401,8 @@ class Fragment_Profile : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        // Перевіряємо, чи користувач уже увійшов
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            // Ховаємо контейнери та показуємо поля для оновлення
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
             newEmail.visibility = View.VISIBLE
@@ -392,8 +412,9 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
             deleteAccountButton.visibility = View.VISIBLE
+            favoritesRecyclerView.visibility = View.VISIBLE
+            loadFavorites()
         } else {
-            // Показуємо контейнери та ховаємо поля для оновлення
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
             newEmail.visibility = View.GONE
@@ -403,6 +424,40 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
+            favoritesRecyclerView.visibility = View.GONE
         }
+    }
+}
+
+data class FavoriteItem(val title: String, val deepLink: String)
+
+class FavoritesAdapter(private val onClick: (deepLink: String) -> Unit) :
+    RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
+
+    private var items: List<FavoriteItem> = emptyList()
+
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val titleTextView: TextView = itemView.findViewById(android.R.id.text1)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(android.R.layout.simple_list_item_1, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = items[position]
+        holder.titleTextView.text = item.title
+        holder.itemView.setOnClickListener {
+            onClick(item.deepLink)
+        }
+    }
+
+    override fun getItemCount(): Int = items.size
+
+    fun submitList(newItems: List<FavoriteItem>) {
+        items = newItems
+        notifyDataSetChanged()
     }
 }

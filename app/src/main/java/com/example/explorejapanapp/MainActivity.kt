@@ -1,5 +1,7 @@
 package com.example.explorejapanapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,17 +12,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainPageBinding
     private lateinit var auth: FirebaseAuth
-    private var currentFragmentIndex = 2 // По умолчанию "Главная" (индекс 2)
+    private var currentFragmentIndex = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MainPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Ініціалізація Firebase Authentication
         auth = FirebaseAuth.getInstance()
 
-        if (savedInstanceState == null) {  // Загружаем фрагмент только при первом создании
+        if (savedInstanceState == null) {
             replaceFragment(Fragment_Home(), 2)
             binding.bottomNavigationView.selectedItemId = R.id.home
         }
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> 2
                 R.id.tips -> 3
                 R.id.options -> 4
-                else -> 2 // По умолчанию "Главная"
+                else -> 2
             }
 
             when (item.itemId) {
@@ -59,6 +60,39 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // Обробка Deep Link при запуску
+        handleDeepLink(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleDeepLink(intent)
+    }
+
+    private fun handleDeepLink(intent: Intent) {
+        val uri: Uri? = intent.data
+        if (uri != null && uri.scheme == "explorejapanapp") {
+            val host = uri.host
+            val articleTitle = uri.getQueryParameter("article")
+            if (articleTitle != null) {
+                val fragment: Fragment = when (host) {
+                    "tokyo" -> City_Tokyo()
+                    // Додайте інші міста тут, наприклад:
+                    // "osaka" -> City_Osaka()
+                    else -> return
+                }
+                val bundle = Bundle().apply {
+                    putString("articleToOpen", articleTitle)
+                }
+                fragment.arguments = bundle
+
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        }
     }
 
     private fun replaceFragment(fragment: Fragment, newIndex: Int) {
@@ -74,13 +108,11 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.frame_layout, fragment)
             .commit()
 
-        // Обновляем текущий индекс
         currentFragmentIndex = newIndex
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        // Виконуємо вихід із акаунта лише при повному закритті активності
         if (auth.currentUser != null) {
             auth.signOut()
         }

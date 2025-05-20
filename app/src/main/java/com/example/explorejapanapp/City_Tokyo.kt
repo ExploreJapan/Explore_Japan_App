@@ -1,6 +1,19 @@
 package com.example.explorejapanapp
 
-import android.os.Bundle import android.util.Log import android.view.LayoutInflater import android.view.View import android.view.ViewGroup import android.widget.ImageButton import android.widget.LinearLayout import androidx.fragment.app.Fragment import com.example.explorejapanapp.databinding.FragmentCityTokyoBinding
+import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.example.explorejapanapp.databinding.FragmentCityTokyoBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class City_Tokyo : Fragment() {
 
@@ -8,6 +21,10 @@ class City_Tokyo : Fragment() {
     private val binding get() = _binding!!
     private var isArticleOpen = false
     private var currentArticleContent: View? = null
+    private var isArticleSaved = false
+    private lateinit var favoriteButton: ImageButton
+    private val auth = FirebaseAuth.getInstance()
+    private val db = Firebase.firestore
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,52 +37,60 @@ class City_Tokyo : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Привязка карточек к обработчикам
+        // Слухачі для відкриття статей
         binding.articleLiving.setOnClickListener { showArticleContent("Проживання") }
         binding.articleTransport.setOnClickListener { showArticleContent("Транспорт") }
         binding.articleFood.setOnClickListener { showArticleContent("Їжа") }
-        binding.articlePlace.setOnClickListener { showArticleContent("Пам`ятки культури") }
+        binding.articlePlace.setOnClickListener { showArticleContent("Пам’ятки культури") }
+
+        // Слухачі для нових зірок
+        binding.favoriteStarLiving.setOnClickListener { toggleFavoriteFromMain("Проживання", binding.favoriteStarLiving) }
+        binding.favoriteStarTransport.setOnClickListener { toggleFavoriteFromMain("Транспорт", binding.favoriteStarTransport) }
+        binding.favoriteStarFood.setOnClickListener { toggleFavoriteFromMain("Їжа", binding.favoriteStarFood) }
+        binding.favoriteStarPlace.setOnClickListener { toggleFavoriteFromMain("Пам’ятки культури", binding.favoriteStarPlace) }
+
+        // Перевіряємо стан зірок при завантаженні
+        checkIfArticleSaved("Проживання", binding.favoriteStarLiving)
+        checkIfArticleSaved("Транспорт", binding.favoriteStarTransport)
+        checkIfArticleSaved("Їжа", binding.favoriteStarFood)
+        checkIfArticleSaved("Пам’ятки культури", binding.favoriteStarPlace)
+
+        // Перевіряємо, чи є стаття для автоматичного відкриття (з Deep Link)
+        val articleToOpen = arguments?.getString("articleToOpen")
+        if (articleToOpen != null) {
+            showArticleContent(articleToOpen)
+        }
     }
 
     private fun showArticleContent(title: String) {
         if (!isArticleOpen) {
             Log.d("CityTokyo", "Starting showArticleContent for title: $title")
 
-            // Проверяем, что binding.mainContent и binding.overlayContainer не null
-            if (binding.mainContent == null) {
-                Log.e("CityTokyo", "binding.mainContent is null")
-                return
-            }
-            if (binding.overlayContainer == null) {
-                Log.e("CityTokyo", "binding.overlayContainer is null")
+            if (binding.mainContent == null || binding.overlayContainer == null) {
+                Log.e("CityTokyo", "binding.mainContent or overlayContainer is null")
                 return
             }
 
-            // Скрываем основной контент и показываем оверлей
             binding.mainContent.visibility = View.GONE
             binding.overlayContainer.visibility = View.VISIBLE
 
-            // Проверяем размеры оверлея
             binding.overlayContainer.post {
                 Log.d("CityTokyo", "overlayContainer width: ${binding.overlayContainer.width}, height: ${binding.overlayContainer.height}")
             }
 
-            // Находим контейнер в оверлее
             val overlayContentContainer = binding.overlayContainer.findViewById<LinearLayout>(R.id.overlay_content_container)
             if (overlayContentContainer == null) {
                 Log.e("CityTokyo", "overlayContentContainer is null")
                 return
             }
 
-            // Удаляем предыдущее содержимое из оверлея
             overlayContentContainer.removeAllViews()
 
-            // Определяем, какой контент показывать
             currentArticleContent = when (title) {
                 "Проживання" -> binding.contentLiving
                 "Транспорт" -> binding.contentTransport
                 "Їжа" -> binding.contentFood
-                "Пам`ятки культури" -> binding.contentPlace
+                "Пам’ятки культури" -> binding.contentPlace
                 else -> null
             }
 
@@ -74,33 +99,39 @@ class City_Tokyo : Fragment() {
                 return
             }
 
-            // Добавляем содержимое в оверлей
             currentArticleContent?.let { content ->
-                Log.d("CityTokyo", "Current article content ID: ${content.id}")
-                // Проверяем, есть ли у представления родитель, и удаляем его
                 if (content.parent != null) {
                     (content.parent as? ViewGroup)?.removeView(content)
                     Log.d("CityTokyo", "Removed view from parent: ${content.id}")
                 }
 
                 content.visibility = View.VISIBLE
-                try {
-                    overlayContentContainer.addView(content)
-                    Log.d("CityTokyo", "Content added to overlay: ${content.id}")
-                    Log.d("CityTokyo", "overlayContentContainer child count: ${overlayContentContainer.childCount}")
-                } catch (e: Exception) {
-                    Log.e("CityTokyo", "Error adding content to overlay: ${e.message}")
+                overlayContentContainer.addView(content)
+                Log.d("CityTokyo", "Content added to overlay: ${content.id}")
+
+                // Перевіряємо, чи стаття вже збережена
+                checkIfArticleSaved(title)
+
+                // Додаємо кнопку "Зірка"
+                favoriteButton = ImageButton(requireContext()).apply {
+                    setImageResource(if (isArticleSaved) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        setMargins(16, 16, 16, 16)
+                    }
+                    setOnClickListener { toggleFavorite(title) }
                 }
+                overlayContentContainer.addView(favoriteButton)
             }
 
-            // Настраиваем кнопку возврата
             val backButton = binding.overlayContainer.findViewById<ImageButton>(R.id.backButton)
             if (backButton == null) {
                 Log.e("CityTokyo", "backButton is null")
                 return
             }
 
-            // Кнопка возврата: закрывает оверлей и возвращает к списку статей
             backButton.setOnClickListener {
                 Log.d("CityTokyo", "Back button clicked")
                 binding.overlayContainer.visibility = View.GONE
@@ -119,9 +150,121 @@ class City_Tokyo : Fragment() {
         }
     }
 
+    private fun checkIfArticleSaved(title: String, starIcon: ImageView? = null) {
+        val user = auth.currentUser
+        if (user != null) {
+            db.collection("users").document(user.uid)
+                .collection("favorites").document(title)
+                .get()
+                .addOnSuccessListener { document ->
+                    isArticleSaved = document.exists()
+                    starIcon?.setImageResource(if (isArticleSaved) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
+                    if (starIcon == null) {
+                        favoriteButton.setImageResource(if (isArticleSaved) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
+                    }
+                }
+                .addOnFailureListener { e ->
+                    Log.e("CityTokyo", "Failed to check if article is saved: ${e.message}")
+                }
+        }
+    }
+
+    private fun toggleFavorite(title: String) {
+        val user = auth.currentUser
+        if (user == null) {
+            Toast.makeText(requireContext(), "Для збереження увійдіть у свій акаунт", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        isArticleSaved = !isArticleSaved
+        favoriteButton.setImageResource(if (isArticleSaved) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
+
+        // Оновлюємо іконку на головному екрані
+        val starIcon = when (title) {
+            "Проживання" -> binding.favoriteStarLiving
+            "Транспорт" -> binding.favoriteStarTransport
+            "Їжа" -> binding.favoriteStarFood
+            "Пам’ятки культури" -> binding.favoriteStarPlace
+            else -> null
+        }
+        starIcon?.setImageResource(if (isArticleSaved) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
+
+        val articleRef = db.collection("users").document(user.uid)
+            .collection("favorites").document(title)
+
+        if (isArticleSaved) {
+            val deepLink = "explorejapanapp://tokyo?article=$title"
+            val articleData = hashMapOf(
+                "url" to deepLink,
+                "title" to title,
+                "city" to "Tokyo"
+            )
+            articleRef.set(articleData)
+                .addOnSuccessListener {
+                    Log.d("CityTokyo", "Article $title saved to favorites with URL: $deepLink")
+                    Toast.makeText(requireContext(), "Стаття додана до Обраного", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Log.e("CityTokyo", "Failed to save article: ${e.message}")
+                    Toast.makeText(requireContext(), "Помилка збереження", Toast.LENGTH_SHORT).show()
+                }
+        } else {
+            articleRef.delete()
+                .addOnSuccessListener {
+                    Log.d("CityTokyo", "Article $title removed from favorites")
+                    Toast.makeText(requireContext(), "Стаття видалена з Обраного", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Log.e("CityTokyo", "Failed to remove article: ${e.message}")
+                    Toast.makeText(requireContext(), "Помилка видалення", Toast.LENGTH_SHORT).show()
+                }
+        }
+    }
+
+    private fun toggleFavoriteFromMain(title: String, starIcon: ImageView) {
+        val user = auth.currentUser
+        if (user == null) {
+            Toast.makeText(requireContext(), "Для збереження увійдіть у свій акаунт", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val articleRef = db.collection("users").document(user.uid)
+            .collection("favorites").document(title)
+
+        articleRef.get().addOnSuccessListener { document ->
+            val wasSaved = document.exists()
+            if (wasSaved) {
+                articleRef.delete()
+                    .addOnSuccessListener {
+                        starIcon.setImageResource(R.drawable.ic_star_outline)
+                        Toast.makeText(requireContext(), "Стаття видалена з Обраного", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("CityTokyo", "Failed to remove article: ${e.message}")
+                        Toast.makeText(requireContext(), "Помилка видалення", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                val deepLink = "explorejapanapp://tokyo?article=$title"
+                val articleData = hashMapOf(
+                    "url" to deepLink,
+                    "title" to title,
+                    "city" to "Tokyo"
+                )
+                articleRef.set(articleData)
+                    .addOnSuccessListener {
+                        starIcon.setImageResource(R.drawable.ic_star_filled)
+                        Toast.makeText(requireContext(), "Стаття додана до Обраного", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("CityTokyo", "Failed to save article: ${e.message}")
+                        Toast.makeText(requireContext(), "Помилка збереження", Toast.LENGTH_SHORT).show()
+                    }
+            }
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
-
 }
