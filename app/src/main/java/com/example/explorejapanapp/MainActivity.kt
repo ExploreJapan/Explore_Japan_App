@@ -78,8 +78,15 @@ class MainActivity : AppCompatActivity() {
             if (articleTitle != null) {
                 val fragment: Fragment = when (host) {
                     "tokyo" -> City_Tokyo()
-                    // Додайте інші міста тут, наприклад:
-                    // "osaka" -> City_Osaka()
+                    "fukuoka" -> City_Fukuoka()
+                    "hiroshima" -> City_Hiroshima()
+                    "kyoto" -> City_Kyoto()
+                    "nagoya" -> City_Nagoya()
+                    "naha" -> City_Naha()
+                    "niigata" -> City_Niigata()
+                    "osaka" -> City_Osaka()
+                    "sapporo" -> City_Sapporo()
+                    "sendai" -> City_Sendai()
                     else -> return
                 }
                 val bundle = Bundle().apply {

@@ -25,6 +25,7 @@ class City_Tokyo : Fragment() {
     private lateinit var favoriteButton: ImageButton
     private val auth = FirebaseAuth.getInstance()
     private val db = Firebase.firestore
+    private val cityName = "Tokyo"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,25 +38,21 @@ class City_Tokyo : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Слухачі для відкриття статей
         binding.articleLiving.setOnClickListener { showArticleContent("Проживання") }
         binding.articleTransport.setOnClickListener { showArticleContent("Транспорт") }
         binding.articleFood.setOnClickListener { showArticleContent("Їжа") }
         binding.articlePlace.setOnClickListener { showArticleContent("Пам’ятки культури") }
 
-        // Слухачі для нових зірок
         binding.favoriteStarLiving.setOnClickListener { toggleFavoriteFromMain("Проживання", binding.favoriteStarLiving) }
         binding.favoriteStarTransport.setOnClickListener { toggleFavoriteFromMain("Транспорт", binding.favoriteStarTransport) }
         binding.favoriteStarFood.setOnClickListener { toggleFavoriteFromMain("Їжа", binding.favoriteStarFood) }
         binding.favoriteStarPlace.setOnClickListener { toggleFavoriteFromMain("Пам’ятки культури", binding.favoriteStarPlace) }
 
-        // Перевіряємо стан зірок при завантаженні
         checkIfArticleSaved("Проживання", binding.favoriteStarLiving)
         checkIfArticleSaved("Транспорт", binding.favoriteStarTransport)
         checkIfArticleSaved("Їжа", binding.favoriteStarFood)
         checkIfArticleSaved("Пам’ятки культури", binding.favoriteStarPlace)
 
-        // Перевіряємо, чи є стаття для автоматичного відкриття (з Deep Link)
         val articleToOpen = arguments?.getString("articleToOpen")
         if (articleToOpen != null) {
             showArticleContent(articleToOpen)
@@ -109,10 +106,8 @@ class City_Tokyo : Fragment() {
                 overlayContentContainer.addView(content)
                 Log.d("CityTokyo", "Content added to overlay: ${content.id}")
 
-                // Перевіряємо, чи стаття вже збережена
                 checkIfArticleSaved(title)
 
-                // Додаємо кнопку "Зірка"
                 favoriteButton = ImageButton(requireContext()).apply {
                     setImageResource(if (isArticleSaved) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
                     layoutParams = LinearLayout.LayoutParams(
@@ -153,8 +148,9 @@ class City_Tokyo : Fragment() {
     private fun checkIfArticleSaved(title: String, starIcon: ImageView? = null) {
         val user = auth.currentUser
         if (user != null) {
+            val docId = "${cityName}_$title"
             db.collection("users").document(user.uid)
-                .collection("favorites").document(title)
+                .collection("favorites").document(docId)
                 .get()
                 .addOnSuccessListener { document ->
                     isArticleSaved = document.exists()
@@ -179,7 +175,6 @@ class City_Tokyo : Fragment() {
         isArticleSaved = !isArticleSaved
         favoriteButton.setImageResource(if (isArticleSaved) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
 
-        // Оновлюємо іконку на головному екрані
         val starIcon = when (title) {
             "Проживання" -> binding.favoriteStarLiving
             "Транспорт" -> binding.favoriteStarTransport
@@ -189,19 +184,20 @@ class City_Tokyo : Fragment() {
         }
         starIcon?.setImageResource(if (isArticleSaved) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
 
+        val docId = "${cityName}_$title"
         val articleRef = db.collection("users").document(user.uid)
-            .collection("favorites").document(title)
+            .collection("favorites").document(docId)
 
         if (isArticleSaved) {
             val deepLink = "explorejapanapp://tokyo?article=$title"
             val articleData = hashMapOf(
                 "url" to deepLink,
                 "title" to title,
-                "city" to "Tokyo"
+                "city" to cityName
             )
             articleRef.set(articleData)
                 .addOnSuccessListener {
-                    Log.d("CityTokyo", "Article $title saved to favorites with URL: $deepLink")
+                    Log.d("CityTokyo", "Article $docId saved to favorites with URL: $deepLink")
                     Toast.makeText(requireContext(), "Стаття додана до Обраного", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { e ->
@@ -211,7 +207,7 @@ class City_Tokyo : Fragment() {
         } else {
             articleRef.delete()
                 .addOnSuccessListener {
-                    Log.d("CityTokyo", "Article $title removed from favorites")
+                    Log.d("CityTokyo", "Article $docId removed from favorites")
                     Toast.makeText(requireContext(), "Стаття видалена з Обраного", Toast.LENGTH_SHORT).show()
                 }
                 .addOnFailureListener { e ->
@@ -228,8 +224,9 @@ class City_Tokyo : Fragment() {
             return
         }
 
+        val docId = "${cityName}_$title"
         val articleRef = db.collection("users").document(user.uid)
-            .collection("favorites").document(title)
+            .collection("favorites").document(docId)
 
         articleRef.get().addOnSuccessListener { document ->
             val wasSaved = document.exists()
@@ -248,7 +245,7 @@ class City_Tokyo : Fragment() {
                 val articleData = hashMapOf(
                     "url" to deepLink,
                     "title" to title,
-                    "city" to "Tokyo"
+                    "city" to cityName
                 )
                 articleRef.set(articleData)
                     .addOnSuccessListener {

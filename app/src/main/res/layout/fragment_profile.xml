@@ -326,14 +326,31 @@
                 android:textStyle="bold"
                 android:visibility="gone" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/favoritesRecyclerView"
+            <!-- Випадаючий список для обраних статей -->
+            <Spinner
+                android:id="@+id/favoritesSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
                 android:visibility="gone" />
+
+            <!-- Текст, якщо немає збережених статей -->
+            <TextView
+                android:id="@+id/no_favorites_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/cambo"
+                android:text="Наразі немає збережених статей"
+                android:textColor="@color/darkgrey"
+                android:textSize="16sp"
+                android:visibility="gone" />
+
 
         </LinearLayout>
     </ScrollView>

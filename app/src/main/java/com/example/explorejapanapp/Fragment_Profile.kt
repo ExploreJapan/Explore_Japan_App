@@ -7,14 +7,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,8 +33,9 @@ class Fragment_Profile : Fragment() {
     private lateinit var newPassword: EditText
     private lateinit var confirmNewPassword: EditText
     private lateinit var updatePasswordButton: MaterialButton
-    private lateinit var favoritesRecyclerView: RecyclerView
-    private lateinit var favoritesAdapter: FavoritesAdapter
+    private lateinit var favoritesSpinner: Spinner
+    private lateinit var noFavoritesText: TextView
+    private lateinit var favoritesTitle: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,15 +55,9 @@ class Fragment_Profile : Fragment() {
         newPassword = view.findViewById(R.id.new_password)
         confirmNewPassword = view.findViewById(R.id.confirm_new_password)
         updatePasswordButton = view.findViewById(R.id.update_password_button)
-        favoritesRecyclerView = view.findViewById(R.id.favoritesRecyclerView)
-
-        // Налаштування RecyclerView для списку "Обране"
-        favoritesRecyclerView.layoutManager = LinearLayoutManager(context)
-        favoritesAdapter = FavoritesAdapter { deepLink: String ->
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
-            startActivity(intent)
-        }
-        favoritesRecyclerView.adapter = favoritesAdapter
+        favoritesSpinner = view.findViewById(R.id.favoritesSpinner)
+        noFavoritesText = view.findViewById(R.id.no_favorites_text)
+        favoritesTitle = view.findViewById(R.id.favorites_title)
 
         if (auth.currentUser != null) {
             loginContainer.visibility = View.GONE
@@ -73,7 +69,7 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
             deleteAccountButton.visibility = View.VISIBLE
-            favoritesRecyclerView.visibility = View.VISIBLE
+            favoritesTitle.visibility = View.VISIBLE
             loadFavorites()
         } else {
             loginContainer.visibility = View.VISIBLE
@@ -85,10 +81,12 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
-            favoritesRecyclerView.visibility = View.GONE
+            favoritesTitle.visibility = View.GONE
+            favoritesSpinner.visibility = View.GONE
+            noFavoritesText.visibility = View.GONE
         }
 
-        // Виклик методу для налаштування кнопок входу та реєстрації
+        // Налаштування кнопок входу та реєстрації
         setupLoginAndRegister(view)
 
         updateEmailButton.setOnClickListener {
@@ -111,17 +109,7 @@ class Fragment_Profile : Fragment() {
                             ).show()
                             newEmail.text.clear()
                             auth.signOut()
-                            loginContainer.visibility = View.VISIBLE
-                            registerContainer.visibility = View.VISIBLE
-                            newEmail.visibility = View.GONE
-                            updateEmailButton.visibility = View.GONE
-                            newPassword.visibility = View.GONE
-                            confirmNewPassword.visibility = View.GONE
-                            updatePasswordButton.visibility = View.GONE
-                            logoutButton.visibility = View.GONE
-                            deleteAccountButton.visibility = View.GONE
-                            favoritesRecyclerView.visibility = View.GONE
-                            activity?.finish()
+                            updateUIForLoggedOutUser()
                         } else {
                             Toast.makeText(
                                 context,
@@ -162,17 +150,7 @@ class Fragment_Profile : Fragment() {
                                 newPassword.text.clear()
                                 confirmNewPassword.text.clear()
                                 auth.signOut()
-                                loginContainer.visibility = View.VISIBLE
-                                registerContainer.visibility = View.VISIBLE
-                                newEmail.visibility = View.GONE
-                                updateEmailButton.visibility = View.GONE
-                                newPassword.visibility = View.GONE
-                                confirmNewPassword.visibility = View.GONE
-                                updatePasswordButton.visibility = View.GONE
-                                logoutButton.visibility = View.GONE
-                                deleteAccountButton.visibility = View.GONE
-                                favoritesRecyclerView.visibility = View.GONE
-                                activity?.finish()
+                                updateUIForLoggedOutUser()
                             } else {
                                 Toast.makeText(
                                     context,
@@ -192,16 +170,7 @@ class Fragment_Profile : Fragment() {
         logoutButton.setOnClickListener {
             auth.signOut()
             Toast.makeText(context, "Вихід успішний!", Toast.LENGTH_SHORT).show()
-            loginContainer.visibility = View.VISIBLE
-            registerContainer.visibility = View.VISIBLE
-            newEmail.visibility = View.GONE
-            updateEmailButton.visibility = View.GONE
-            newPassword.visibility = View.GONE
-            confirmNewPassword.visibility = View.GONE
-            updatePasswordButton.visibility = View.GONE
-            logoutButton.visibility = View.GONE
-            deleteAccountButton.visibility = View.GONE
-            favoritesRecyclerView.visibility = View.GONE
+            updateUIForLoggedOutUser()
         }
 
         deleteAccountButton.setOnClickListener {
@@ -218,18 +187,94 @@ class Fragment_Profile : Fragment() {
                 .collection("favorites")
                 .get()
                 .addOnSuccessListener { documents ->
-                    val favorites = documents.map { doc ->
-                        FavoriteItem(
-                            title = doc.getString("title") ?: "",
-                            deepLink = doc.getString("url") ?: ""
+                    if (documents.isEmpty) {
+                        favoritesSpinner.visibility = View.GONE
+                        noFavoritesText.visibility = View.VISIBLE
+                    } else {
+                        val favorites = documents.map { doc ->
+                            FavoriteItem(
+                                title = doc.getString("title") ?: "",
+                                city = doc.getString("city") ?: "",
+                                deepLink = doc.getString("url") ?: ""
+                            )
+                        }
+
+                        // Формуємо список для Spinner у форматі "Назва (Місто)"
+                        val displayItems = mutableListOf<String>()
+                        displayItems.add("Оберіть статтю") // Додаємо перший елемент для підказки
+                        val favoriteItemsMap = favorites.associateBy { item ->
+                            val cityUkrainian = convertCityToUkrainian(item.city)
+                            "${item.title} ($cityUkrainian)"
+                        }
+
+                        displayItems.addAll(favoriteItemsMap.keys)
+
+                        // Налаштовуємо адаптер для Spinner
+                        val adapter = ArrayAdapter(
+                            requireContext(),
+                            android.R.layout.simple_spinner_item,
+                            displayItems
                         )
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                        favoritesSpinner.adapter = adapter
+                        favoritesSpinner.visibility = View.VISIBLE
+                        noFavoritesText.visibility = View.GONE
+
+                        // Додаємо слухач для Spinner
+                        favoritesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                                if (position == 0) return // Пропускаємо перший елемент ("Оберіть статтю")
+                                val selectedItem = displayItems[position]
+                                val favoriteItem = favoriteItemsMap[selectedItem]
+                                favoriteItem?.deepLink?.let { deepLink ->
+                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
+                                    startActivity(intent)
+                                }
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>) {}
+                        }
                     }
-                    favoritesAdapter.submitList(favorites)
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Помилка завантаження обраного: ${e.message}", Toast.LENGTH_SHORT).show()
+                    favoritesSpinner.visibility = View.GONE
+                    noFavoritesText.visibility = View.VISIBLE
                 }
         }
+    }
+
+    // Функція для конвертації назви міста в українську (кирилиця)
+    private fun convertCityToUkrainian(city: String): String {
+        return when (city) {
+            "Tokyo" -> "Токіо"
+            "Fukuoka" -> "Фукуока"
+            "Hiroshima" -> "Хіросіма"
+            "Kyoto" -> "Кіото"
+            "Nagoya" -> "Нагоя"
+            "Naha" -> "Наха"
+            "Niigata" -> "Нііґата"
+            "Osaka" -> "Осака"
+            "Sapporo" -> "Саппоро"
+            "Sendai" -> "Сендай"
+            else -> city // Якщо місто невідоме, повертаємо оригінальну назву
+        }
+    }
+
+    private fun updateUIForLoggedOutUser() {
+        loginContainer.visibility = View.VISIBLE
+        registerContainer.visibility = View.VISIBLE
+        newEmail.visibility = View.GONE
+        updateEmailButton.visibility = View.GONE
+        newPassword.visibility = View.GONE
+        confirmNewPassword.visibility = View.GONE
+        updatePasswordButton.visibility = View.GONE
+        logoutButton.visibility = View.GONE
+        deleteAccountButton.visibility = View.GONE
+        favoritesTitle.visibility = View.GONE
+        favoritesSpinner.visibility = View.GONE
+        noFavoritesText.visibility = View.GONE
+        activity?.finish()
     }
 
     private fun showDeleteConfirmationDialog() {
@@ -242,16 +287,7 @@ class Fragment_Profile : Fragment() {
                         .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 Toast.makeText(context, "Акаунт успішно видалено!", Toast.LENGTH_SHORT).show()
-                                loginContainer.visibility = View.VISIBLE
-                                registerContainer.visibility = View.VISIBLE
-                                newEmail.visibility = View.GONE
-                                updateEmailButton.visibility = View.GONE
-                                newPassword.visibility = View.GONE
-                                confirmNewPassword.visibility = View.GONE
-                                updatePasswordButton.visibility = View.GONE
-                                logoutButton.visibility = View.GONE
-                                deleteAccountButton.visibility = View.GONE
-                                favoritesRecyclerView.visibility = View.GONE
+                                updateUIForLoggedOutUser()
                             } else {
                                 Toast.makeText(
                                     context,
@@ -335,7 +371,7 @@ class Fragment_Profile : Fragment() {
                         updatePasswordButton.visibility = View.VISIBLE
                         logoutButton.visibility = View.VISIBLE
                         deleteAccountButton.visibility = View.VISIBLE
-                        favoritesRecyclerView.visibility = View.VISIBLE
+                        favoritesTitle.visibility = View.VISIBLE
                         loadFavorites()
                     } else {
                         Toast.makeText(
@@ -386,7 +422,7 @@ class Fragment_Profile : Fragment() {
                         updatePasswordButton.visibility = View.VISIBLE
                         logoutButton.visibility = View.VISIBLE
                         deleteAccountButton.visibility = View.VISIBLE
-                        favoritesRecyclerView.visibility = View.VISIBLE
+                        favoritesTitle.visibility = View.VISIBLE
                         loadFavorites()
                     } else {
                         Toast.makeText(
@@ -412,7 +448,7 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
             deleteAccountButton.visibility = View.VISIBLE
-            favoritesRecyclerView.visibility = View.VISIBLE
+            favoritesTitle.visibility = View.VISIBLE
             loadFavorites()
         } else {
             loginContainer.visibility = View.VISIBLE
@@ -424,40 +460,11 @@ class Fragment_Profile : Fragment() {
             updatePasswordButton.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
-            favoritesRecyclerView.visibility = View.GONE
+            favoritesTitle.visibility = View.GONE
+            favoritesSpinner.visibility = View.GONE
+            noFavoritesText.visibility = View.GONE
         }
     }
 }
 
-data class FavoriteItem(val title: String, val deepLink: String)
-
-class FavoritesAdapter(private val onClick: (deepLink: String) -> Unit) :
-    RecyclerView.Adapter<FavoritesAdapter.ViewHolder>() {
-
-    private var items: List<FavoriteItem> = emptyList()
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val titleTextView: TextView = itemView.findViewById(android.R.id.text1)
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(android.R.layout.simple_list_item_1, parent, false)
-        return ViewHolder(view)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = items[position]
-        holder.titleTextView.text = item.title
-        holder.itemView.setOnClickListener {
-            onClick(item.deepLink)
-        }
-    }
-
-    override fun getItemCount(): Int = items.size
-
-    fun submitList(newItems: List<FavoriteItem>) {
-        items = newItems
-        notifyDataSetChanged()
-    }
-}
+data class FavoriteItem(val title: String, val city: String, val deepLink: String)

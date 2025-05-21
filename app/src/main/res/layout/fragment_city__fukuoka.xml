@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/fjord_one"
-                android:text="@string/tokyo"
+                android:text="@string/fukuoka"
                 android:textColor="@color/black2"
                 android:textSize="32sp"
                 android:textStyle="bold"
@@ -103,7 +103,7 @@
 
                     <TextView
                         android:id="@+id/article_living_title"
-                        android:layout_width="290dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/zen_old_mincho"
                         android:text="@string/living"
@@ -115,6 +115,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
+
+                    <ImageView
+                        android:id="@+id/favorite_star_living"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star_outline"
+                        android:contentDescription="@string/favorites" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -137,7 +145,7 @@
 
                     <TextView
                         android:id="@+id/article_transport_title"
-                        android:layout_width="290dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/zen_old_mincho"
                         android:text="@string/transport"
@@ -149,6 +157,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
+
+                    <ImageView
+                        android:id="@+id/favorite_star_transport"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star_outline"
+                        android:contentDescription="@string/favorites" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -171,7 +187,7 @@
 
                     <TextView
                         android:id="@+id/article_food_title"
-                        android:layout_width="290dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/zen_old_mincho"
                         android:text="@string/food"
@@ -183,6 +199,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
+
+                    <ImageView
+                        android:id="@+id/favorite_star_food"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star_outline"
+                        android:contentDescription="@string/favorites" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -205,7 +229,7 @@
 
                     <TextView
                         android:id="@+id/article_place_title"
-                        android:layout_width="290dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/zen_old_mincho"
                         android:text="@string/place"
@@ -217,8 +241,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
-                </LinearLayout>
 
+                    <ImageView
+                        android:id="@+id/favorite_star_place"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star_outline"
+                        android:contentDescription="@string/favorites" />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- Содержимое для статьи "Проживання" -->
@@ -754,13 +785,11 @@
                             android:layout_height="wrap_content"
                             android:text="@string/fuku_place_four_five_text"
                             android:textSize="16sp" />
-
                     </LinearLayout>
                 </ScrollView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 
     <!-- Оверлей -->
     <androidx.cardview.widget.CardView

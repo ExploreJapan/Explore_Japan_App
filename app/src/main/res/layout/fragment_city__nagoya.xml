@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:fontFamily="@font/fjord_one"
-                android:text="@string/tokyo"
+                android:text="@string/nagoya"
                 android:textColor="@color/black2"
                 android:textSize="32sp"
                 android:textStyle="bold"
@@ -103,7 +103,7 @@
 
                     <TextView
                         android:id="@+id/article_living_title"
-                        android:layout_width="290dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/zen_old_mincho"
                         android:text="@string/living"
@@ -115,6 +115,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
+
+                    <ImageView
+                        android:id="@+id/favoriteStarLiving"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star_outline"
+                        android:contentDescription="@string/favorites" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -137,7 +145,7 @@
 
                     <TextView
                         android:id="@+id/article_transport_title"
-                        android:layout_width="290dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/zen_old_mincho"
                         android:text="@string/transport"
@@ -149,6 +157,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
+
+                    <ImageView
+                        android:id="@+id/favoriteStarTransport"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star_outline"
+                        android:contentDescription="@string/favorites" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -171,7 +187,7 @@
 
                     <TextView
                         android:id="@+id/article_food_title"
-                        android:layout_width="290dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/zen_old_mincho"
                         android:text="@string/food"
@@ -183,6 +199,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
+
+                    <ImageView
+                        android:id="@+id/favoriteStarFood"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star_outline"
+                        android:contentDescription="@string/favorites" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -205,7 +229,7 @@
 
                     <TextView
                         android:id="@+id/article_place_title"
-                        android:layout_width="290dp"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/zen_old_mincho"
                         android:text="@string/place"
@@ -217,8 +241,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:src="@drawable/add" />
-                </LinearLayout>
 
+                    <ImageView
+                        android:id="@+id/favoriteStarPlace"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_star_outline"
+                        android:contentDescription="@string/favorites" />
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <!-- Содержимое для статьи "Проживання" -->
@@ -602,7 +633,7 @@
                 </ScrollView>
             </LinearLayout>
 
-            <!-- Содержимое для статьи "Визначні пам'ятки" -->
+            <!-- Содержимое для статьи "Визначні пам’ятки" -->
             <LinearLayout
                 android:id="@+id/content_place"
                 android:layout_width="match_parent"
@@ -630,7 +661,7 @@
                             android:textSize="24sp"
                             android:textStyle="bold" />
 
-                        <!-- Подраздел 4.1: Замок Нагоя    -->
+                        <!-- Подраздел 4.1: Замок Нагоя -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -655,7 +686,7 @@
                             android:text="@string/nago_place_four_one_text"
                             android:textSize="16sp" />
 
-                        <!-- Подраздел 4.2: Храм Ацута   -->
+                        <!-- Подраздел 4.2: Храм Ацута -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -680,7 +711,7 @@
                             android:text="@string/nago_place_four_two_text"
                             android:textSize="16sp" />
 
-                        <!-- Подраздел 4.3: Район Осу    -->
+                        <!-- Подраздел 4.3: Район Осу -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -705,7 +736,7 @@
                             android:text="@string/nago_place_four_three_text"
                             android:textSize="16sp" />
 
-                        <!-- Подраздел 4.4: Музей Toyota Commemorative   -->
+                        <!-- Подраздел 4.4: Музей Toyota Commemorative -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -730,7 +761,7 @@
                             android:text="@string/nago_place_four_four_text"
                             android:textSize="16sp" />
 
-                        <!-- Подраздел 4.5: Сад Токуґаваєн     -->
+                        <!-- Подраздел 4.5: Сад Токуґаваєн -->
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -754,13 +785,11 @@
                             android:layout_height="wrap_content"
                             android:text="@string/nago_place_four_five_text"
                             android:textSize="16sp" />
-
                     </LinearLayout>
                 </ScrollView>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 
     <!-- Оверлей -->
     <androidx.cardview.widget.CardView
