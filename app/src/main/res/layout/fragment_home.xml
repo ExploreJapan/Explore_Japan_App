@@ -331,9 +331,9 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Блок 8: Yokohama -->
+            <!-- Блок 8: Niigata -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/yokohama_card"
+                android:id="@+id/niigata_card"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_margin="8dp"
@@ -348,7 +348,7 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/yokohama_image"
+                        android:id="@+id/niigata_image"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="3"
@@ -356,7 +356,7 @@
                         android:src="@drawable/niigata_image" />
 
                     <TextView
-                        android:id="@+id/yokohama_name"
+                        android:id="@+id/niigata_name"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -370,9 +370,9 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Блок 9: Kobe -->
+            <!-- Блок 9: Sendai -->
             <androidx.cardview.widget.CardView
-                android:id="@+id/kobe_card"
+                android:id="@+id/sendai_card"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_margin="8dp"
@@ -387,7 +387,7 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/kobe_image"
+                        android:id="@+id/sendai_image"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="3"
@@ -395,7 +395,7 @@
                         android:src="@drawable/sendai_image" />
 
                     <TextView
-                        android:id="@+id/kobe_name"
+                        android:id="@+id/sendai_name"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -447,6 +447,47 @@
                         android:padding="8dp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <!-- Блок 11: Общий -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/all_card"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_columnWeight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/all_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/japan" />
+
+                    <TextView
+                        android:id="@+id/all_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/all"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"
+                        android:background="@color/oldlace"
+                        android:padding="8dp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
         </GridLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

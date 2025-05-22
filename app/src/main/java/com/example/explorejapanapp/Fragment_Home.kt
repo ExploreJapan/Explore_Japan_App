@@ -25,9 +25,10 @@ class Fragment_Home : Fragment() {
         val sapporoCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.sapporo_card)
         val fukuokaCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.fukuoka_card)
         val nagoyaCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.nagoya_card)
-        val niigataCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.yokohama_card)
-        val sendaiCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.kobe_card)
+        val niigataCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.niigata_card)
+        val sendaiCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.sendai_card)
         val nahaCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.nara_card)
+        val allCard = view.findViewById<androidx.cardview.widget.CardView>(R.id.all_card)
 
         // Обработка нажатий на блоки
         tokyoCard.setOnClickListener { replaceFragment(City_Tokyo()) }
@@ -40,6 +41,7 @@ class Fragment_Home : Fragment() {
         niigataCard.setOnClickListener { replaceFragment(City_Niigata()) }
         sendaiCard.setOnClickListener { replaceFragment(City_Sendai()) }
         nahaCard.setOnClickListener { replaceFragment(City_Naha()) }
+        allCard.setOnClickListener { replaceFragment(City_All()) }
     }
 
     private fun replaceFragment(fragment: Fragment) {
