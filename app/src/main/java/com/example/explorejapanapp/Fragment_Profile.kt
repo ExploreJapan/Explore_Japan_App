@@ -199,12 +199,16 @@ class Fragment_Profile : Fragment() {
                             )
                         }
 
-                        // Формуємо список для Spinner у форматі "Назва (Місто)"
+                        // Формуємо список для Spinner
                         val displayItems = mutableListOf<String>()
                         displayItems.add("Оберіть статтю") // Додаємо перший елемент для підказки
                         val favoriteItemsMap = favorites.associateBy { item ->
-                            val cityUkrainian = convertCityToUkrainian(item.city)
-                            "${item.title} ($cityUkrainian)"
+                            if (item.city == "All") {
+                                item.title // Для "All" показуємо лише назву без скобок
+                            } else {
+                                val cityUkrainian = convertCityToUkrainian(item.city)
+                                "${item.title} ($cityUkrainian)" // Для інших міст додаємо місто в дужках
+                            }
                         }
 
                         displayItems.addAll(favoriteItemsMap.keys)
@@ -274,7 +278,6 @@ class Fragment_Profile : Fragment() {
         favoritesTitle.visibility = View.GONE
         favoritesSpinner.visibility = View.GONE
         noFavoritesText.visibility = View.GONE
-        activity?.finish()
     }
 
     private fun showDeleteConfirmationDialog() {
