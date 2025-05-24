@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.profile -> 1
                 R.id.home -> 2
                 R.id.tips -> 3
-                R.id.options -> 4
+                R.id.info -> 4
                 else -> 2
             }
 
@@ -53,8 +53,8 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(Fragment_Tips(), newFragmentIndex)
                     true
                 }
-                R.id.options -> {
-                    replaceFragment(Fragment_Options(), newFragmentIndex)
+                R.id.info -> {
+                    replaceFragment(Fragment_Info(), newFragmentIndex)
                     true
                 }
                 else -> false

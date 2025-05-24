@@ -22,7 +22,7 @@
         android:title="@string/tips" />
 
     <item
-        android:id="@+id/options"
-        android:icon="@drawable/settings"
-        android:title="@string/options" />
+        android:id="@+id/info"
+        android:icon="@drawable/info"
+        android:title="@string/info_title" />
 </menu>
