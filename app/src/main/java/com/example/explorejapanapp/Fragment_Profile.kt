@@ -7,12 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
@@ -33,9 +28,9 @@ class Fragment_Profile : Fragment() {
     private lateinit var newPassword: EditText
     private lateinit var confirmNewPassword: EditText
     private lateinit var updatePasswordButton: MaterialButton
-    private lateinit var favoritesSpinner: Spinner
     private lateinit var noFavoritesText: TextView
     private lateinit var favoritesTitle: TextView
+    private lateinit var favoritesTable: TableLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,9 +50,9 @@ class Fragment_Profile : Fragment() {
         newPassword = view.findViewById(R.id.new_password)
         confirmNewPassword = view.findViewById(R.id.confirm_new_password)
         updatePasswordButton = view.findViewById(R.id.update_password_button)
-        favoritesSpinner = view.findViewById(R.id.favoritesSpinner)
         noFavoritesText = view.findViewById(R.id.no_favorites_text)
         favoritesTitle = view.findViewById(R.id.favorites_title)
+        favoritesTable = view.findViewById(R.id.favorites_table)
 
         if (auth.currentUser != null) {
             loginContainer.visibility = View.GONE
@@ -82,7 +77,7 @@ class Fragment_Profile : Fragment() {
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
             favoritesTitle.visibility = View.GONE
-            favoritesSpinner.visibility = View.GONE
+            favoritesTable.visibility = View.GONE
             noFavoritesText.visibility = View.GONE
         }
 
@@ -188,64 +183,110 @@ class Fragment_Profile : Fragment() {
                 .get()
                 .addOnSuccessListener { documents ->
                     if (documents.isEmpty) {
-                        favoritesSpinner.visibility = View.GONE
+                        favoritesTable.visibility = View.GONE
                         noFavoritesText.visibility = View.VISIBLE
                     } else {
                         val favorites = documents.map { doc ->
                             FavoriteItem(
                                 title = doc.getString("title") ?: "",
                                 city = doc.getString("city") ?: "",
-                                deepLink = doc.getString("url") ?: ""
+                                deepLink = doc.getString("url") ?: "",
+                                docId = doc.id
                             )
                         }
 
-                        // Формуємо список для Spinner
-                        val displayItems = mutableListOf<String>()
-                        displayItems.add("Оберіть статтю") // Додаємо перший елемент для підказки
-                        val favoriteItemsMap = favorites.associateBy { item ->
-                            if (item.city == "All") {
-                                item.title // Для "All" показуємо лише назву без скобок
+                        // Очищаємо таблицю, залишаючи лише заголовок
+                        favoritesTable.removeViews(1, favoritesTable.childCount - 1)
+
+                        // Додаємо рядки до таблиці
+                        favorites.forEach { item ->
+                            val displayText = if (item.city == "All") {
+                                item.title
                             } else {
                                 val cityUkrainian = convertCityToUkrainian(item.city)
-                                "${item.title} ($cityUkrainian)" // Для інших міст додаємо місто в дужках
+                                "${item.title} ($cityUkrainian)"
                             }
+
+                            val tableRow = TableRow(requireContext())
+                            tableRow.layoutParams = TableRow.LayoutParams(
+                                TableRow.LayoutParams.MATCH_PARENT,
+                                TableRow.LayoutParams.WRAP_CONTENT
+                            )
+                            tableRow.setPadding(8, 8, 8, 8)
+
+                            // Колонка з посиланням на статтю
+                            val articleLink = TextView(requireContext())
+                            articleLink.layoutParams = TableRow.LayoutParams(
+                                0,
+                                TableRow.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+                            articleLink.text = displayText
+                            articleLink.textSize = 16f
+                            articleLink.setTextColor(requireContext().getColor(android.R.color.black))
+                            articleLink.gravity = android.view.Gravity.CENTER
+                            articleLink.setOnClickListener {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.deepLink))
+                                startActivity(intent)
+                            }
+
+                            // Колонка з кнопкою "Видалити"
+                            val deleteButton = Button(requireContext())
+                            deleteButton.layoutParams = TableRow.LayoutParams(
+                                0,
+                                TableRow.LayoutParams.WRAP_CONTENT,
+                                1f
+                            )
+                            deleteButton.text = "Видалити"
+                            deleteButton.setBackgroundColor(requireContext().getColor(android.R.color.holo_red_light))
+                            deleteButton.setTextColor(requireContext().getColor(android.R.color.white))
+                            deleteButton.setOnClickListener {
+                                showDeleteConfirmationDialog(item)
+                            }
+
+                            tableRow.addView(articleLink)
+                            tableRow.addView(deleteButton)
+                            favoritesTable.addView(tableRow)
                         }
 
-                        displayItems.addAll(favoriteItemsMap.keys)
-
-                        // Налаштовуємо адаптер для Spinner
-                        val adapter = ArrayAdapter(
-                            requireContext(),
-                            android.R.layout.simple_spinner_item,
-                            displayItems
-                        )
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                        favoritesSpinner.adapter = adapter
-                        favoritesSpinner.visibility = View.VISIBLE
+                        favoritesTable.visibility = View.VISIBLE
                         noFavoritesText.visibility = View.GONE
-
-                        // Додаємо слухач для Spinner
-                        favoritesSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                                if (position == 0) return // Пропускаємо перший елемент ("Оберіть статтю")
-                                val selectedItem = displayItems[position]
-                                val favoriteItem = favoriteItemsMap[selectedItem]
-                                favoriteItem?.deepLink?.let { deepLink ->
-                                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(deepLink))
-                                    startActivity(intent)
-                                }
-                            }
-
-                            override fun onNothingSelected(parent: AdapterView<*>) {}
-                        }
                     }
                 }
                 .addOnFailureListener { e ->
                     Toast.makeText(context, "Помилка завантаження обраного: ${e.message}", Toast.LENGTH_SHORT).show()
-                    favoritesSpinner.visibility = View.GONE
+                    favoritesTable.visibility = View.GONE
                     noFavoritesText.visibility = View.VISIBLE
                 }
         }
+    }
+
+    // Діалог підтвердження видалення
+    private fun showDeleteConfirmationDialog(item: FavoriteItem) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("Видалити статтю?")
+            .setMessage("Ви впевнені, що хочете видалити '${item.title}' із обраного?")
+            .setPositiveButton("Так") { _, _ ->
+                val user = auth.currentUser
+                if (user != null) {
+                    db.collection("users").document(user.uid)
+                        .collection("favorites")
+                        .document(item.docId)
+                        .delete()
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "Стаття видалена з обраного!", Toast.LENGTH_SHORT).show()
+                            loadFavorites() // Оновлюємо таблицю після видалення
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(context, "Помилка видалення: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
+            .setNegativeButton("Ні") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
     // Функція для конвертації назви міста в українську (кирилиця)
@@ -261,7 +302,8 @@ class Fragment_Profile : Fragment() {
             "Osaka" -> "Осака"
             "Sapporo" -> "Саппоро"
             "Sendai" -> "Сендай"
-            else -> city // Якщо місто невідоме, повертаємо оригінальну назву
+            "Tips" -> "Поради"
+            else -> city
         }
     }
 
@@ -276,7 +318,7 @@ class Fragment_Profile : Fragment() {
         logoutButton.visibility = View.GONE
         deleteAccountButton.visibility = View.GONE
         favoritesTitle.visibility = View.GONE
-        favoritesSpinner.visibility = View.GONE
+        favoritesTable.visibility = View.GONE
         noFavoritesText.visibility = View.GONE
     }
 
@@ -464,10 +506,10 @@ class Fragment_Profile : Fragment() {
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
             favoritesTitle.visibility = View.GONE
-            favoritesSpinner.visibility = View.GONE
+            favoritesTable.visibility = View.GONE
             noFavoritesText.visibility = View.GONE
         }
     }
 }
 
-data class FavoriteItem(val title: String, val city: String, val deepLink: String)
+data class FavoriteItem(val title: String, val city: String, val deepLink: String, val docId: String)
