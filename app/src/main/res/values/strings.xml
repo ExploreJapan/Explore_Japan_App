@@ -17,17 +17,19 @@
     <string name="email">Електронна пошта</string>
     <string name="password">Пароль</string>
     <string name="confirm_password">Підтвердження паролю</string>
-    <string name="button_logout">Вийти</string>
+    <string name="button_logout">Вийти з акаунту</string>
     <string name="button_delete_account">Видалити акаунт</string>
 
-    <string name="new_email">Нова пошта</string>
-    <string name="new_password">Новий пароль</string>
+    <string name="new_email">Введіть нову електронну пошту</string>
+    <string name="new_email2">Зміна електронної пошти</string>
+    <string name="new_password">Введіть новий пароль</string>
+    <string name="new_password2">Зміна паролю</string>
     <string name="button_update_email">Оновити пошту</string>
     <string name="button_update_password">Оновити пароль</string>
     <string name="delete_account_confirmation">Ви впевнені, що хочете видалити свій акаунт?</string>
     <string name="confirm_delete">Видалити</string>
     <string name="cancel">Скасувати</string>
-    <string name="confirm_new_password">Підтвердіть новий пароль</string>
+    <string name="confirm_new_password">Введіть повторно новий пароль</string>
     <string name="please_relogin">Будь ласка, вийдіть і увійдіть знову, щоб застосувати зміни.</string>
     <string name="forgot_password">Забули пароль?</string>
     <string name="password_reset_sent">Посилання для скидання пароля надіслано на вашу пошту!</string>
