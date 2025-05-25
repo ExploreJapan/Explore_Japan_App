@@ -148,6 +148,7 @@
                     android:textColor="@color/darkgrey"
                     android:textSize="24sp"
                     android:textStyle="bold"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

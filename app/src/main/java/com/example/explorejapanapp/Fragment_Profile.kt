@@ -21,6 +21,8 @@ class Fragment_Profile : Fragment() {
     private lateinit var db: FirebaseFirestore
     private lateinit var loginContainer: ConstraintLayout
     private lateinit var registerContainer: ConstraintLayout
+    private lateinit var emailContainer: ConstraintLayout
+    private lateinit var passwordContainer: ConstraintLayout
     private lateinit var logoutButton: MaterialButton
     private lateinit var deleteAccountButton: MaterialButton
     private lateinit var newEmail: EditText
@@ -43,6 +45,8 @@ class Fragment_Profile : Fragment() {
 
         loginContainer = view.findViewById(R.id.login_container)
         registerContainer = view.findViewById(R.id.register_container)
+        emailContainer = view.findViewById(R.id.email_container)
+        passwordContainer = view.findViewById(R.id.password_container)
         logoutButton = view.findViewById(R.id.logout_button)
         deleteAccountButton = view.findViewById(R.id.delete_account_button)
         newEmail = view.findViewById(R.id.new_email)
@@ -57,11 +61,8 @@ class Fragment_Profile : Fragment() {
         if (auth.currentUser != null) {
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
-            newEmail.visibility = View.VISIBLE
-            updateEmailButton.visibility = View.VISIBLE
-            newPassword.visibility = View.VISIBLE
-            confirmNewPassword.visibility = View.VISIBLE
-            updatePasswordButton.visibility = View.VISIBLE
+            emailContainer.visibility = View.VISIBLE
+            passwordContainer.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
             deleteAccountButton.visibility = View.VISIBLE
             favoritesTitle.visibility = View.VISIBLE
@@ -69,11 +70,8 @@ class Fragment_Profile : Fragment() {
         } else {
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
-            newEmail.visibility = View.GONE
-            updateEmailButton.visibility = View.GONE
-            newPassword.visibility = View.GONE
-            confirmNewPassword.visibility = View.GONE
-            updatePasswordButton.visibility = View.GONE
+            emailContainer.visibility = View.GONE
+            passwordContainer.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
             favoritesTitle.visibility = View.GONE
@@ -310,11 +308,8 @@ class Fragment_Profile : Fragment() {
     private fun updateUIForLoggedOutUser() {
         loginContainer.visibility = View.VISIBLE
         registerContainer.visibility = View.VISIBLE
-        newEmail.visibility = View.GONE
-        updateEmailButton.visibility = View.GONE
-        newPassword.visibility = View.GONE
-        confirmNewPassword.visibility = View.GONE
-        updatePasswordButton.visibility = View.GONE
+        emailContainer.visibility = View.GONE
+        passwordContainer.visibility = View.GONE
         logoutButton.visibility = View.GONE
         deleteAccountButton.visibility = View.GONE
         favoritesTitle.visibility = View.GONE
@@ -409,11 +404,8 @@ class Fragment_Profile : Fragment() {
                         loginPassword.text.clear()
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
-                        newEmail.visibility = View.VISIBLE
-                        updateEmailButton.visibility = View.VISIBLE
-                        newPassword.visibility = View.VISIBLE
-                        confirmNewPassword.visibility = View.VISIBLE
-                        updatePasswordButton.visibility = View.VISIBLE
+                        emailContainer.visibility = View.VISIBLE
+                        passwordContainer.visibility = View.VISIBLE
                         logoutButton.visibility = View.VISIBLE
                         deleteAccountButton.visibility = View.VISIBLE
                         favoritesTitle.visibility = View.VISIBLE
@@ -460,11 +452,8 @@ class Fragment_Profile : Fragment() {
                         registerConfirmPassword.text.clear()
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
-                        newEmail.visibility = View.VISIBLE
-                        updateEmailButton.visibility = View.VISIBLE
-                        newPassword.visibility = View.VISIBLE
-                        confirmNewPassword.visibility = View.VISIBLE
-                        updatePasswordButton.visibility = View.VISIBLE
+                        emailContainer.visibility = View.VISIBLE
+                        passwordContainer.visibility = View.VISIBLE
                         logoutButton.visibility = View.VISIBLE
                         deleteAccountButton.visibility = View.VISIBLE
                         favoritesTitle.visibility = View.VISIBLE
@@ -486,11 +475,8 @@ class Fragment_Profile : Fragment() {
         if (currentUser != null) {
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
-            newEmail.visibility = View.VISIBLE
-            updateEmailButton.visibility = View.VISIBLE
-            newPassword.visibility = View.VISIBLE
-            confirmNewPassword.visibility = View.VISIBLE
-            updatePasswordButton.visibility = View.VISIBLE
+            emailContainer.visibility = View.VISIBLE
+            passwordContainer.visibility = View.VISIBLE
             logoutButton.visibility = View.VISIBLE
             deleteAccountButton.visibility = View.VISIBLE
             favoritesTitle.visibility = View.VISIBLE
@@ -498,11 +484,8 @@ class Fragment_Profile : Fragment() {
         } else {
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
-            newEmail.visibility = View.GONE
-            updateEmailButton.visibility = View.GONE
-            newPassword.visibility = View.GONE
-            confirmNewPassword.visibility = View.GONE
-            updatePasswordButton.visibility = View.GONE
+            emailContainer.visibility = View.GONE
+            passwordContainer.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
             favoritesTitle.visibility = View.GONE
