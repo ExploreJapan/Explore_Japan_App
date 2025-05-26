@@ -71,7 +71,46 @@
                 android:textColor="@color/darkgrey"
                 android:textSize="34sp" />
 
-            <!--  Контейнер для зміни пошти -->
+            <!-- Контейнер для двух новых кнопок -->
+            <LinearLayout
+                android:id="@+id/top_buttons_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:visibility="gone">
+
+                <!-- Кнопка "Збережені статті" -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/favorites_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:backgroundTint="@color/red"
+                    android:fontFamily="@font/cambo"
+                    android:text="@string/favorites_button"
+                    android:textColor="@color/white"
+                    app:cornerRadius="16dp" />
+
+                <!-- Кнопка "Профіль" -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/profile_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="8dp"
+                    android:backgroundTint="@color/red"
+                    android:fontFamily="@font/cambo"
+                    android:text="@string/profile_button"
+                    android:textColor="@color/white"
+                    app:cornerRadius="16dp" />
+            </LinearLayout>
+
+            <!-- Контейнер для зміни пошти -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/email_container"
                 android:layout_width="match_parent"
@@ -93,6 +132,7 @@
                     android:textColor="@color/darkgrey"
                     android:textSize="24sp"
                     android:textStyle="bold"
+                    android:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -126,7 +166,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/new_email" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!--  Контейнер для зміни паролю  -->
+            <!-- Контейнер для зміни паролю -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/password_container"
                 android:layout_width="match_parent"
@@ -300,7 +340,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/forgot_password" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Контейнер для реєстрації -->

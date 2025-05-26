@@ -23,6 +23,9 @@ class Fragment_Profile : Fragment() {
     private lateinit var registerContainer: ConstraintLayout
     private lateinit var emailContainer: ConstraintLayout
     private lateinit var passwordContainer: ConstraintLayout
+    private lateinit var topButtonsContainer: LinearLayout
+    private lateinit var favoritesButton: MaterialButton
+    private lateinit var profileButton: MaterialButton
     private lateinit var logoutButton: MaterialButton
     private lateinit var deleteAccountButton: MaterialButton
     private lateinit var newEmail: EditText
@@ -47,6 +50,9 @@ class Fragment_Profile : Fragment() {
         registerContainer = view.findViewById(R.id.register_container)
         emailContainer = view.findViewById(R.id.email_container)
         passwordContainer = view.findViewById(R.id.password_container)
+        topButtonsContainer = view.findViewById(R.id.top_buttons_container)
+        favoritesButton = view.findViewById(R.id.favorites_button)
+        profileButton = view.findViewById(R.id.profile_button)
         logoutButton = view.findViewById(R.id.logout_button)
         deleteAccountButton = view.findViewById(R.id.delete_account_button)
         newEmail = view.findViewById(R.id.new_email)
@@ -61,17 +67,15 @@ class Fragment_Profile : Fragment() {
         if (auth.currentUser != null) {
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
-            emailContainer.visibility = View.VISIBLE
-            passwordContainer.visibility = View.VISIBLE
-            logoutButton.visibility = View.VISIBLE
-            deleteAccountButton.visibility = View.VISIBLE
-            favoritesTitle.visibility = View.VISIBLE
+            topButtonsContainer.visibility = View.VISIBLE
+            showProfileSection()
             loadFavorites()
         } else {
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
             emailContainer.visibility = View.GONE
             passwordContainer.visibility = View.GONE
+            topButtonsContainer.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
             favoritesTitle.visibility = View.GONE
@@ -81,6 +85,15 @@ class Fragment_Profile : Fragment() {
 
         // Налаштування кнопок входу та реєстрації
         setupLoginAndRegister(view)
+
+        // Обработчики для новых кнопок
+        favoritesButton.setOnClickListener {
+            showFavoritesSection()
+        }
+
+        profileButton.setOnClickListener {
+            showProfileSection()
+        }
 
         updateEmailButton.setOnClickListener {
             val newEmailText = newEmail.text.toString().trim()
@@ -310,6 +323,7 @@ class Fragment_Profile : Fragment() {
         registerContainer.visibility = View.VISIBLE
         emailContainer.visibility = View.GONE
         passwordContainer.visibility = View.GONE
+        topButtonsContainer.visibility = View.GONE
         logoutButton.visibility = View.GONE
         deleteAccountButton.visibility = View.GONE
         favoritesTitle.visibility = View.GONE
@@ -404,11 +418,8 @@ class Fragment_Profile : Fragment() {
                         loginPassword.text.clear()
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
-                        emailContainer.visibility = View.VISIBLE
-                        passwordContainer.visibility = View.VISIBLE
-                        logoutButton.visibility = View.VISIBLE
-                        deleteAccountButton.visibility = View.VISIBLE
-                        favoritesTitle.visibility = View.VISIBLE
+                        topButtonsContainer.visibility = View.VISIBLE
+                        showProfileSection()
                         loadFavorites()
                     } else {
                         Toast.makeText(
@@ -452,11 +463,8 @@ class Fragment_Profile : Fragment() {
                         registerConfirmPassword.text.clear()
                         loginContainer.visibility = View.GONE
                         registerContainer.visibility = View.GONE
-                        emailContainer.visibility = View.VISIBLE
-                        passwordContainer.visibility = View.VISIBLE
-                        logoutButton.visibility = View.VISIBLE
-                        deleteAccountButton.visibility = View.VISIBLE
-                        favoritesTitle.visibility = View.VISIBLE
+                        topButtonsContainer.visibility = View.VISIBLE
+                        showProfileSection()
                         loadFavorites()
                     } else {
                         Toast.makeText(
@@ -475,23 +483,41 @@ class Fragment_Profile : Fragment() {
         if (currentUser != null) {
             loginContainer.visibility = View.GONE
             registerContainer.visibility = View.GONE
-            emailContainer.visibility = View.VISIBLE
-            passwordContainer.visibility = View.VISIBLE
-            logoutButton.visibility = View.VISIBLE
-            deleteAccountButton.visibility = View.VISIBLE
-            favoritesTitle.visibility = View.VISIBLE
+            topButtonsContainer.visibility = View.VISIBLE
+            showProfileSection()
             loadFavorites()
         } else {
             loginContainer.visibility = View.VISIBLE
             registerContainer.visibility = View.VISIBLE
             emailContainer.visibility = View.GONE
             passwordContainer.visibility = View.GONE
+            topButtonsContainer.visibility = View.GONE
             logoutButton.visibility = View.GONE
             deleteAccountButton.visibility = View.GONE
             favoritesTitle.visibility = View.GONE
             favoritesTable.visibility = View.GONE
             noFavoritesText.visibility = View.GONE
         }
+    }
+
+    private fun showProfileSection() {
+        emailContainer.visibility = View.VISIBLE
+        passwordContainer.visibility = View.VISIBLE
+        logoutButton.visibility = View.VISIBLE
+        deleteAccountButton.visibility = View.VISIBLE
+        favoritesTitle.visibility = View.GONE
+        favoritesTable.visibility = View.GONE
+        noFavoritesText.visibility = View.GONE
+    }
+
+    private fun showFavoritesSection() {
+        emailContainer.visibility = View.GONE
+        passwordContainer.visibility = View.GONE
+        logoutButton.visibility = View.GONE
+        deleteAccountButton.visibility = View.GONE
+        favoritesTitle.visibility = View.VISIBLE
+        favoritesTable.visibility = View.VISIBLE
+        noFavoritesText.visibility = if (favoritesTable.childCount <= 1) View.VISIBLE else View.GONE
     }
 }
 
