@@ -17,7 +17,7 @@ import android.util.Log
 
 class Fragment_Map : Fragment(), OnMapReadyCallback {
 
-    private var mapView: MapView? = null
+    internal var mapView: MapView? = null
     private var googleMap: GoogleMap? = null
 
     override fun onCreateView(

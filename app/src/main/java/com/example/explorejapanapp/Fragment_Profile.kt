@@ -17,25 +17,25 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 class Fragment_Profile : Fragment() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
-    private lateinit var loginContainer: ConstraintLayout
-    private lateinit var registerContainer: ConstraintLayout
-    private lateinit var emailContainer: ConstraintLayout
-    private lateinit var passwordContainer: ConstraintLayout
-    private lateinit var topButtonsContainer: LinearLayout
-    private lateinit var favoritesButton: MaterialButton
-    private lateinit var profileButton: MaterialButton
-    private lateinit var logoutButton: MaterialButton
-    private lateinit var deleteAccountButton: MaterialButton
-    private lateinit var newEmail: EditText
-    private lateinit var updateEmailButton: MaterialButton
-    private lateinit var newPassword: EditText
-    private lateinit var confirmNewPassword: EditText
-    private lateinit var updatePasswordButton: MaterialButton
-    private lateinit var noFavoritesText: TextView
-    private lateinit var favoritesTitle: TextView
-    private lateinit var favoritesTable: TableLayout
+    internal lateinit var auth: FirebaseAuth
+    internal lateinit var db: FirebaseFirestore
+    internal lateinit var loginContainer: ConstraintLayout
+    internal lateinit var registerContainer: ConstraintLayout
+    internal lateinit var emailContainer: ConstraintLayout
+    internal lateinit var passwordContainer: ConstraintLayout
+    internal lateinit var topButtonsContainer: LinearLayout
+    internal lateinit var favoritesButton: MaterialButton
+    internal lateinit var profileButton: MaterialButton
+    internal lateinit var logoutButton: MaterialButton
+    internal lateinit var deleteAccountButton: MaterialButton
+    internal lateinit var newEmail: EditText
+    internal lateinit var updateEmailButton: MaterialButton
+    internal lateinit var newPassword: EditText
+    internal lateinit var confirmNewPassword: EditText
+    internal lateinit var updatePasswordButton: MaterialButton
+    internal lateinit var noFavoritesText: TextView
+    internal lateinit var favoritesTitle: TextView
+    internal lateinit var favoritesTable: TableLayout
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -500,7 +500,7 @@ class Fragment_Profile : Fragment() {
         }
     }
 
-    private fun showProfileSection() {
+    internal fun showProfileSection() {
         emailContainer.visibility = View.VISIBLE
         passwordContainer.visibility = View.VISIBLE
         logoutButton.visibility = View.VISIBLE
@@ -510,7 +510,7 @@ class Fragment_Profile : Fragment() {
         noFavoritesText.visibility = View.GONE
     }
 
-    private fun showFavoritesSection() {
+    internal fun showFavoritesSection() {
         emailContainer.visibility = View.GONE
         passwordContainer.visibility = View.GONE
         logoutButton.visibility = View.GONE

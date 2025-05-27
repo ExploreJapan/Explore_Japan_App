@@ -39,15 +39,14 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-
-    buildFeatures {
         viewBinding = true
-    }
-    buildFeatures {
         dataBinding = true
     }
-
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -73,6 +72,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    testImplementation ("org.robolectric:robolectric:4.12.1")
+    testImplementation ("androidx.fragment:fragment-testing:1.5.7")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

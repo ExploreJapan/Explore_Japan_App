@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         handleDeepLink(intent)
     }
 
-    private fun handleDeepLink(intent: Intent) {
+    internal fun handleDeepLink(intent: Intent) {
         val uri: Uri? = intent.data
         if (uri != null && uri.scheme == "explorejapanapp") {
             val host = uri.host
@@ -102,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun replaceFragment(fragment: Fragment, newIndex: Int) {
+    internal fun replaceFragment(fragment: Fragment, newIndex: Int) {
         val isMovingRight = newIndex > currentFragmentIndex
 
         supportFragmentManager.beginTransaction()

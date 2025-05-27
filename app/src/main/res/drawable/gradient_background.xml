@@ -6,7 +6,7 @@
             <gradient
                 android:startColor="@color/pastel_green_tea"
                 android:endColor="@color/lavender"
-                android:angle="145" />
+                android:angle="135" />
         </shape>
     </item>
     <!-- Слой 2: Паттерн из 4 иконок -->
