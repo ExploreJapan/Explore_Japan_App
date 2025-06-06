@@ -12,7 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 
 class Fragment_Profile : Fragment() {
@@ -86,7 +88,7 @@ class Fragment_Profile : Fragment() {
         // Налаштування кнопок входу та реєстрації
         setupLoginAndRegister(view)
 
-        // Обработчики для новых кнопок
+        // Обробники для нових кнопок
         favoritesButton.setOnClickListener {
             showFavoritesSection()
         }
@@ -286,7 +288,7 @@ class Fragment_Profile : Fragment() {
                         .delete()
                         .addOnSuccessListener {
                             Toast.makeText(context, "Стаття видалена з обраного!", Toast.LENGTH_SHORT).show()
-                            loadFavorites() // Оновлюємо таблицю після видалення
+                            loadFavorites()
                         }
                         .addOnFailureListener { e ->
                             Toast.makeText(context, "Помилка видалення: ${e.message}", Toast.LENGTH_SHORT).show()
@@ -454,22 +456,32 @@ class Fragment_Profile : Fragment() {
                 return@setOnClickListener
             }
 
-            auth.createUserWithEmailAndPassword(email, password)
+            val actionCodeSettings = ActionCodeSettings.newBuilder()
+                .setUrl("https://explorejapanapp.page.link/verify") // Ваш URL для повернення
+                .setHandleCodeInApp(true)
+                .setIOSBundleId("com.example.ios")
+                .setAndroidPackageName(
+                    "com.example.explorejapanapp",
+                    true, /* installIfNotAvailable */
+                    "12"  /* minimumVersion */
+                )
+                .build()
+
+            auth.sendSignInLinkToEmail(email, actionCodeSettings)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(context, "Реєстрація успішна!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            "На пошту надіслано лист для підтвердження реєстрації",
+                            Toast.LENGTH_LONG
+                        ).show()
                         registerEmail.text.clear()
                         registerPassword.text.clear()
                         registerConfirmPassword.text.clear()
-                        loginContainer.visibility = View.GONE
-                        registerContainer.visibility = View.GONE
-                        topButtonsContainer.visibility = View.VISIBLE
-                        showProfileSection()
-                        loadFavorites()
                     } else {
                         Toast.makeText(
                             context,
-                            "Помилка реєстрації: ${task.exception?.message}",
+                            "Помилка відправки листа: ${task.exception?.message}",
                             Toast.LENGTH_LONG
                         ).show()
                     }

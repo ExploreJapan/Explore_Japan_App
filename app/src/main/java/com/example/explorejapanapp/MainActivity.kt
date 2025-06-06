@@ -1,8 +1,10 @@
 package com.example.explorejapanapp
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.explorejapanapp.databinding.MainPageBinding
@@ -65,39 +67,77 @@ class MainActivity : AppCompatActivity() {
         handleDeepLink(intent)
     }
 
-    override fun onNewIntent(intent: Intent) {
+    override fun onNewIntent(intent: Intent)
+    { // Залишаємо без "override" через обмеження Kotlin
         super.onNewIntent(intent)
-        handleDeepLink(intent)
+        this.intent = intent // Оновлюємо поточний інтент
+        handleDeepLink(intent) // Передаємо intent як є, адже handleDeepLink уже обробляє null
     }
 
-    internal fun handleDeepLink(intent: Intent) {
-        val uri: Uri? = intent.data
-        if (uri != null && uri.scheme == "explorejapanapp") {
-            val host = uri.host
-            val articleTitle = uri.getQueryParameter("article")
-            if (articleTitle != null) {
-                val fragment: Fragment = when (host) {
-                    "tokyo" -> City_Tokyo()
-                    "fukuoka" -> City_Fukuoka()
-                    "hiroshima" -> City_Hiroshima()
-                    "kyoto" -> City_Kyoto()
-                    "nagoya" -> City_Nagoya()
-                    "naha" -> City_Naha()
-                    "niigata" -> City_Niigata()
-                    "osaka" -> City_Osaka()
-                    "sapporo" -> City_Sapporo()
-                    "sendai" -> City_Sendai()
-                    else -> return
-                }
-                val bundle = Bundle().apply {
-                    putString("articleToOpen", articleTitle)
-                }
-                fragment.arguments = bundle
+    internal fun handleDeepLink(intent: Intent?) {
+        if (intent == null) return // Повертаємося, якщо intent null
 
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, fragment)
-                    .addToBackStack(null)
-                    .commit()
+        val uri: Uri? = intent.data
+        if (uri != null) {
+            // Обробка email-посилання для аутентифікації
+            val emailLink = uri.toString()
+            if (auth.isSignInWithEmailLink(emailLink)) {
+                val sharedPref = getPreferences(Context.MODE_PRIVATE)
+                val email = sharedPref.getString("pending_email", null)
+                if (email != null) {
+                    auth.signInWithEmailLink(email, emailLink)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                Toast.makeText(this, "Реєстрація підтверджена!", Toast.LENGTH_SHORT).show()
+                                with(sharedPref.edit()) {
+                                    remove("pending_email")
+                                    apply()
+                                }
+                                // Переходимо до профілю після підтвердження
+                                replaceFragment(Fragment_Profile(), 1)
+                                binding.bottomNavigationView.selectedItemId = R.id.profile
+                            } else {
+                                Toast.makeText(
+                                    this,
+                                    "Помилка підтвердження: ${task.exception?.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                } else {
+                    Toast.makeText(this, "Помилка: email не знайдено", Toast.LENGTH_LONG).show()
+                }
+                return // Завершуємо обробку, якщо це email-посилання
+            }
+
+            // Обробка Deep Link для статей
+            if (uri.scheme == "explorejapanapp") {
+                val host = uri.host
+                val articleTitle = uri.getQueryParameter("article")
+                if (articleTitle != null) {
+                    val fragment: Fragment = when (host) {
+                        "tokyo" -> City_Tokyo()
+                        "fukuoka" -> City_Fukuoka()
+                        "hiroshima" -> City_Hiroshima()
+                        "kyoto" -> City_Kyoto()
+                        "nagoya" -> City_Nagoya()
+                        "naha" -> City_Naha()
+                        "niigata" -> City_Niigata()
+                        "osaka" -> City_Osaka()
+                        "sapporo" -> City_Sapporo()
+                        "sendai" -> City_Sendai()
+                        else -> return
+                    }
+                    val bundle = Bundle().apply {
+                        putString("articleToOpen", articleTitle)
+                    }
+                    fragment.arguments = bundle
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout, fragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
             }
         }
     }
